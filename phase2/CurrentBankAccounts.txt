@@ -1,0 +1,17 @@
+00005_logintest           _A_00000.00
+00006_logouttest          _A_00000.00
+00007_withdrawaltest      _A_00500.00
+00008_withdrawaltest2     _A_00150.00
+00009_transfertest        _A_01000.00
+00010_transfertest2       _A_00150.00
+00011_createtest          _A_00000.00
+00013_changeplantest      _A_00000.00
+00014_disabletest         _A_00000.00
+00015_disabletest2        _D_00000.00
+00888_deletetest          _A_00000.00
+00889_deletetest1         _A_00150.00
+00151_admintestcase       _A_00150.00
+00152_standardtestcase    _A_00150.00
+00153_lowerlimittestcase  _A_00000.00
+00154_upperlimittestcase  _A_02500.00
+00155_depowithdrawal      _A_00000.00
