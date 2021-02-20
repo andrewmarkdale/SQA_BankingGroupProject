@@ -2,7 +2,6 @@
 #include <string>
 #include <stdlib.h> 
 #include <fstream>
-
   
 using namespace std; 
 
@@ -62,14 +61,70 @@ bool Session::validateAccountHolder() {
       return true;
     }
   }
+  cout << "account not found\n";
   return false;
   reader.close();
 };
 
 class Transaction {
   public:            
+  string currentTransaction;
   string transactionCode;
+  string validTransactions[9];  
+  Transaction(){
+    validTransactions[0] = "logout"; 
+    validTransactions[1] = "withdrawal";
+    validTransactions[2] = "deposit"; 
+    validTransactions[3] = "transfer"; 
+    validTransactions[4] = "paybill"; 
+    validTransactions[5] = "disable"; 
+    validTransactions[6] = "delete"; 
+    validTransactions[7] = "create";  
+    validTransactions[8] = "changeplan";  
+  };
+  void getTransaction();
+  bool validateTransaction();
+  bool logout();
+  bool withdrawal();
+  bool deposit();
+  bool transfer();
+  bool paybill();
+  bool disable();
+  bool Delete();
+  bool create();
+  bool changeplan();
+  void startCurrentTransaction();
+};
 
+bool Transaction::validateTransaction(){
+  for(int i = 0; i < 9; i++){
+    if(currentTransaction == validTransactions[i]){
+      return true;
+    }
+  }
+  cout << "invalid input\n";
+  getTransaction();
+  return false;
+};
+
+void Transaction::startCurrentTransaction(){
+  if(currentTransaction == validTransactions[0]){
+    logout();
+  }
+}
+
+
+bool Transaction::logout(){
+  ofstream writeTransactionFile("sessiontransactions.txt");
+  string appendToTransaction = string("00_")+string("temp           _")+string("00000_")+string("00000.00_");
+  writeTransactionFile << appendToTransaction;
+  writeTransactionFile.close();
+  return true;
+};
+
+void Transaction::getTransaction(){
+  cout << "enter transaction type\n";
+  cin >> currentTransaction;
 };
 
 class User {
@@ -79,6 +134,7 @@ class User {
   string accountNumber;
   char accountStatus;
 };
+
 
 //This system is an automated teller machine terminal for simple banking transactions.
 //The program is intended to run from the terminal where a session will be started and 
@@ -91,5 +147,13 @@ int main()
     cout << "welcome to the banking system\n"; 
     Session newSession; 
     newSession.login();
+    if(newSession.accountHolderExist){
+      Transaction newTransaction;
+      newTransaction.getTransaction();
+      newTransaction.validateTransaction();
+      newTransaction.startCurrentTransaction();
+    }else{
+      exit(0);
+    }
     return 0; 
-} 
+}
