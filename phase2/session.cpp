@@ -70,8 +70,9 @@ class Transaction {
   public:            
   string currentTransaction;
   string transactionCode;
-  string validTransactions[9];  
-  Transaction(){
+  string validTransactions[9];
+  string accountHolderName;  
+  Transaction(Session currentsession){
     validTransactions[0] = "logout"; 
     validTransactions[1] = "withdrawal";
     validTransactions[2] = "deposit"; 
@@ -81,6 +82,11 @@ class Transaction {
     validTransactions[6] = "delete"; 
     validTransactions[7] = "create";  
     validTransactions[8] = "changeplan";  
+    if(currentsession.sessionType == "standard"){
+      accountHolderName = currentsession.accountHolderName;
+    }else{
+      accountHolderName = "";
+    }
   };
   void getTransaction();
   bool validateTransaction();
@@ -96,6 +102,12 @@ class Transaction {
   void startCurrentTransaction();
 };
 
+void Transaction::getTransaction(){
+  cout << "enter transaction type\n";
+  cin >> currentTransaction;
+  validateTransaction();
+};
+
 bool Transaction::validateTransaction(){
   for(int i = 0; i < 9; i++){
     if(currentTransaction == validTransactions[i]){
@@ -104,7 +116,6 @@ bool Transaction::validateTransaction(){
   }
   cout << "invalid input\n";
   getTransaction();
-  return false;
 };
 
 void Transaction::startCurrentTransaction(){
@@ -116,16 +127,15 @@ void Transaction::startCurrentTransaction(){
 
 bool Transaction::logout(){
   ofstream writeTransactionFile("sessiontransactions.txt");
-  string appendToTransaction = string("00_")+string("temp           _")+string("00000_")+string("00000.00_");
+  for(int i = accountHolderName.length(); i < 20; i++){
+    accountHolderName += ' ';
+  }
+  string appendToTransaction = string("00_")+string(accountHolderName)+string("_00000_")+string("00000.00_");
   writeTransactionFile << appendToTransaction;
   writeTransactionFile.close();
   return true;
 };
 
-void Transaction::getTransaction(){
-  cout << "enter transaction type\n";
-  cin >> currentTransaction;
-};
 
 class User {
   public:            
@@ -148,9 +158,8 @@ int main()
     Session newSession; 
     newSession.login();
     if(newSession.accountHolderExist){
-      Transaction newTransaction;
+      Transaction newTransaction(newSession);
       newTransaction.getTransaction();
-      newTransaction.validateTransaction();
       newTransaction.startCurrentTransaction();
     }else{
       exit(0);
