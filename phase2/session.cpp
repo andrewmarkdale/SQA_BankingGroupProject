@@ -225,19 +225,20 @@ bool Transaction::changeplan(){
   if(validateAccountNumber()){
     if(validatePlan()){
       ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+      string tempname = accountHolderName;
       for(int i = accountHolderName.length(); i<20; i++){
-        accountHolderName += ' ';
+        tempname += ' ';
       }
       if(planType == "NP"){
         cout << "account updated to non-student\n";
-        string appendToTransaction = "08_"+accountHolderName+"_"+accountNumber+"_00000.00_";
+        string appendToTransaction = "08_"+tempname+"_"+accountNumber+"_00000.00_";
         writeTransactionFile << appendToTransaction << endl;
         writeTransactionFile.close();
         return true;
       }
       else if(planType == "SP"){
         cout << "account updated to student\n";
-        string appendToTransaction = "08_"+accountHolderName+"_"+accountNumber+"_00000.00_";
+        string appendToTransaction = "08_"+tempname+"_"+accountNumber+"_00000.00_";
         writeTransactionFile << appendToTransaction << endl;
         writeTransactionFile.close();
         return true;
