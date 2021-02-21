@@ -126,7 +126,6 @@ class Transaction {
   bool disable();
   bool Delete();
   bool create();
-  bool changeplan();
   void startCurrentTransaction();
 };
 
@@ -151,7 +150,7 @@ bool Transaction::validateTransaction(){
 bool Transaction::validatePlan(){
   cout << "enter account type (SP - student, NP - standard):\n";
   cin >> planType;
-  for(int i = 0; i < validPlans.length(); i++){
+  for(int i = 0; i < 2; i++){
     if(planType == validPlans[i]){
       return true;
     }
@@ -224,11 +223,11 @@ bool Transaction::changeplan(){
   if(validateAccountNumber()){
     if(validatePlan()){
       if(planType == "NP"){
-        cout << "account updated to non-student";
+        cout << "account updated to non-student\n";
         return true;
       }
       else if(planType == "SP"){
-        cout << "account updated to student";
+        cout << "account updated to student\n";
         return true;
       }
     }
