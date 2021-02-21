@@ -8,3 +8,5 @@
 00_logintest           _00000_00000.00_
 03_logintest           _00005_05000.00_
 00_logintest           _00000_00000.00_
+01_deletetest          _00888_0_
+00_deletetest          _00000_00000.00_
