@@ -86,7 +86,9 @@ class Transaction {
   string transactionCode;
   string validTransactions[9];
   string currentPayee;
+  string planType;
   string validPayees[3];
+  string validPlans[2];
   string accountHolderName;
   string accountNumber;
   Transaction(Session currentsession){
@@ -102,6 +104,8 @@ class Transaction {
     validPayees[0] = "EC";
     validPayees[1] = "CQ";
     validPayees[2] = "FI";
+    validPlans[0] = "NP";
+    validPlans[1] = "SP";
     if(currentsession.sessionType == "standard"){
       accountHolderName = currentsession.accountHolderName;
     }else{
@@ -111,9 +115,11 @@ class Transaction {
   void getTransaction();
   bool validateTransaction();
   bool validatePayee();
+  bool validatePlan();
   bool validateAccountNumber();
   bool logout();
   bool withdrawal();
+  bool changeplan();
   bool deposit();
   bool transfer();
   bool paybill();
@@ -142,6 +148,17 @@ bool Transaction::validateTransaction(){
   return false;
 };
 
+bool Transaction::validatePlan(){
+  cout << "enter account type (SP - student, NP - standard):\n";
+  cin >> planType;
+  for(int i = 0; i < validPlans.length(); i++){
+    if(planType == validPlans[i]){
+      return true;
+    }
+  }
+  cout << "unknown plan\n";
+  validatePlan();
+}
 
 bool Transaction::validatePayee(){
   cout << "enter the payee:\n";
@@ -197,6 +214,24 @@ void Transaction::startCurrentTransaction(){
   }else if(currentTransaction == validTransactions[7]){
     create();
   }
+}
+
+bool Transaction::changeplan(){
+  cout << "enter account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    if(validatePlan()){
+      if(planType == "NP"){
+        cout << "account updated to non-student";
+        return true;
+      }
+      else if(planType == "SP"){
+        cout << "account updated to student";
+        return true;
+      }
+    }
+  }
+  return false;
 }
 bool Transaction::deposit(){
   string depositAmount;
@@ -322,22 +357,17 @@ bool Transaction::create(){
 
   cout << "enter balance: \n";
   cin >> balance;
-  float toFloat = stof(balance);
-  float maxNum = 99999.99;
 
-  if (toFloat > maxNum){
-    ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
-    for(int i = temp_name.length(); i < 20; i++){
-      temp_name += ' ';
-    }
-
-    string appendToTransaction = string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_");
-    writeTransactionFile << appendToTransaction <<endl;
-    writeTransactionFile.close();
-    return true;
+  ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+  for(int i = temp_name.length(); i < 20; i++){
+    temp_name += ' ';
   }
-  cout << "balance exceeded\n";
-  return false;
+
+  string appendToTransaction = string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_");
+  writeTransactionFile << appendToTransaction <<endl;
+  writeTransactionFile.close();
+  return true;
+
 }
 
 bool Transaction::Delete(){
@@ -353,7 +383,6 @@ bool Transaction::Delete(){
     string appendToTransaction = "06_"+accountHolderName+"_"+accountNumber+"_"+string("00000.00_");
     writeTransactionFile << appendToTransaction <<endl;
     writeTransactionFile.close();
-    cout << "account deleted\n";
     return true;
   }
   return false;
