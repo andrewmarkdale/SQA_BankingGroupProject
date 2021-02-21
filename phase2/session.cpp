@@ -34,7 +34,7 @@ void Session::getsessionType() {
     cin >> accountHolderName;
     accountHolderExist = validateAccountHolder();
   }else if (sessionType == "admin"){
-    getTransaction();
+    //getTransaction();
   }else{
       cout << "invalid input\n";
       exit(0);
