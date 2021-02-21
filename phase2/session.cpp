@@ -322,17 +322,22 @@ bool Transaction::create(){
 
   cout << "enter balance: \n";
   cin >> balance;
+  float toFloat = stof(balance);
+  float maxNum = 99999.99;
 
-  ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
-  for(int i = temp_name.length(); i < 20; i++){
-    temp_name += ' ';
+  if (toFloat > maxNum){
+    ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    for(int i = temp_name.length(); i < 20; i++){
+      temp_name += ' ';
+    }
+
+    string appendToTransaction = string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_");
+    writeTransactionFile << appendToTransaction <<endl;
+    writeTransactionFile.close();
+    return true;
   }
-
-  string appendToTransaction = string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_");
-  writeTransactionFile << appendToTransaction <<endl;
-  writeTransactionFile.close();
-  return true;
-
+  cout << "balance exceeded\n";
+  return false;
 }
 
 bool Transaction::Delete(){
@@ -348,6 +353,7 @@ bool Transaction::Delete(){
     string appendToTransaction = "06_"+accountHolderName+"_"+accountNumber+"_"+string("00000.00_");
     writeTransactionFile << appendToTransaction <<endl;
     writeTransactionFile.close();
+    cout << "account deleted\n";
     return true;
   }
   return false;
