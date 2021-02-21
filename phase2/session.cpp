@@ -92,6 +92,8 @@ class Transaction {
   string validPlans[2];
   string accountHolderName;
   string accountNumber;
+  string accountNumberTo;
+  string accountHolderNameTo;
   Transaction(Session currentsession){
     validTransactions[0] = "logout";
     validTransactions[1] = "withdrawal";
@@ -158,6 +160,7 @@ bool Transaction::validatePlan(){
   }
   cout << "unknown plan\n";
   validatePlan();
+  return false;
 }
 
 bool Transaction::validatePayee(){
@@ -188,9 +191,11 @@ bool Transaction::validateAccountNumber(){
         word[counter] += line[i];
       }
     }
-    if(word[1] == accountHolderName && word[0] == accountNumber){
-      //User currentUser(word[0], word[1], word[2], word[3]);
-      reader.close();
+    if(currentTransaction == "transfer" && accountNumberTo == word[0]){
+      accountHolderNameTo = word[1];
+      return true;
+    }
+    if(word[1] == accountHolderName && word[0] == accountNumber && accountNumberTo ==""){
       return true;
     }
   }
@@ -206,6 +211,8 @@ void Transaction::startCurrentTransaction(){
     withdrawal();
   }else if(currentTransaction == validTransactions[2]){
     deposit();
+  }else if(currentTransaction == validTransactions[3]){
+    transfer();
   }else if(currentTransaction == validTransactions[4]){
     paybill();
   }else if(currentTransaction == validTransactions[5]){
@@ -217,6 +224,45 @@ void Transaction::startCurrentTransaction(){
   }else if(currentTransaction == validTransactions[8]){
     changeplan();
   }
+}
+
+bool Transaction::transfer(){
+  string transferamount;
+  cout << "enter account number(from):\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    cout <<"enter account number (to):\n";
+    cin >> accountNumberTo;
+    if(validateAccountNumber()){
+      cout <<"enter transfer amount:\n";
+      cin >> transferamount;
+      cout <<"transfer successful\n";
+
+      ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+        string tempname = accountHolderName;
+      for(int i = accountHolderName.length(); i<20; i++){
+        tempname += ' ';
+      }
+      for(int i = accountHolderNameTo.length(); i<20; i++){
+        accountHolderNameTo += ' ';
+      }
+      string appendToTransaction = "02_"+tempname+"_"+accountNumber+"_"+transferamount+"_";
+      string appendToTransaction2 = "02_"+accountHolderNameTo+"_"+accountNumberTo+"_"+transferamount+"_";
+      writeTransactionFile << appendToTransaction << endl;
+      writeTransactionFile << appendToTransaction2 << endl;
+      writeTransactionFile.close();
+      accountNumberTo ="";
+      accountHolderNameTo ="";
+      return true;
+    }else{
+      accountNumberTo ="";
+      accountHolderNameTo ="";
+      return false;
+    }
+  }
+  accountNumberTo ="";
+  accountHolderNameTo ="";
+  return false;
 }
 
 bool Transaction::changeplan(){
@@ -269,10 +315,8 @@ bool Transaction::deposit(){
   return false;
 }
 /*
-
 Paybill transaction, validates account number, validates payee and writes to
 transaction file once user has entered payment amount
-
 */
 bool Transaction::paybill(){
   string paymentAmount;
