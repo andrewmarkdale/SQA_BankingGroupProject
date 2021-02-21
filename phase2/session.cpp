@@ -346,6 +346,7 @@ closes transaction file
 
 returns true
 */
+
 bool Transaction::paybill(){
   string paymentAmount;
   cout << "enter the account number\n";
@@ -407,6 +408,31 @@ bool Transaction::logout(){
   return true;
 };
 
+/*
+disable transaction, validates session type and writes to transaction file
+after user has input the confirmation character
+
+var d -> user inputs disable confirmation
+
+currently allows all session types
+to use disable()
+
+validates credentials
+if false returns false
+
+terminal prompts account name
+user enters account name
+terminal prompts account number
+user enters account number
+terminal prompts confirmation
+user enters confirmation
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 
 bool Transaction::disable(){
   string d;
@@ -436,10 +462,39 @@ bool Transaction::disable(){
   return false;
 }
 
+/*
+Create transaction, validates session type and writes to transaction file
+after user has input the account name, account number and balance
+
+var temp_name -> user inputs new account name
+var temp_num -> user inputs new account number
+var balance -> user inputs new balance
+
+currently allows all session types
+to use create()
+
+validates credentials
+if false returns false
+
+terminal prompts account name
+user enters account name
+terminal prompts account number
+user enters account number
+terminal prompts balance
+user enters balance
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
+
 bool Transaction::create(){
   string temp_name;
   string temp_num;
   string balance;
+
 
   cout << "enter account name\n";
   cin >> temp_name;
@@ -462,8 +517,27 @@ bool Transaction::create(){
 
 }
 
+/*
+Delete transaction, validates session type and writes to transaction file
+after user has input the account name, account number and balance
+
+currently allows all session types
+to use Delete()
+
+validates credentials
+if false returns false
+
+terminal prompts success message
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
+
 bool Transaction::Delete(){
-  string withdrawalamount;
+
   cout << "enter account number\n";
   cin >> accountNumber;
   if(validateAccountNumber()){
@@ -478,15 +552,18 @@ bool Transaction::Delete(){
     writeTransactionFile.close();
     return true;
   }
+
   return false;
+
 }
 
-//This system is an automated teller machine terminal for simple banking transactions.
-//The program is intended to run from the terminal where a session will be started and
+//  This system is an automated teller machine terminal for simple banking transactions.
+//  The program is intended to run from the terminal where a session will be started and
 //  process valid transactions for that session. A session will begin when 'login' is entered
 //  and will end after logout.
-//Input: currentBankAccount file
-//Output: bankAccountTransaction file
+//  Input: currentBankAccount file
+//  Output: bankAccountTransaction file
+
 int main()
 {
     cout << "welcome to the banking system\n";
