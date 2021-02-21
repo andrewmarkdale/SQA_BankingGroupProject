@@ -142,14 +142,16 @@ bool Transaction::validateTransaction(){
   getTransaction();
   return false;
 };
-
+/*
 void Transaction::getPayee(){
   cout << "enter the payee:\n";
   cin >> currentPayee;
   validatePayee();
-}
+} */
 
 bool Transaction::validatePayee(){
+  cout << "enter the payee:\n";
+  cin >> currentPayee;
   for(int i = 0; i < 3; i++){
     if(currentPayee == validPayees[i]){
       return true;
