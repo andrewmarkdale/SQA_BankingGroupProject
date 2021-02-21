@@ -146,7 +146,7 @@ bool Transaction::validateTransaction(){
 void Transaction::getPayee(){
   cout << "enter the payee:\n";
   cin >> currentPayee;
-  validatePayee;
+  validatePayee();
 }
 
 bool Transaction::validatePayee(){
@@ -190,6 +190,10 @@ void Transaction::startCurrentTransaction(){
     logout();
   }else if(currentTransaction == validTransactions[1]){
     withdrawal();
+  }else if(currentTransaction == validTransactions[2]){
+    deposit();
+  }else if(currentTransaction == validTransactions[4]){
+    paybill();
   }
 }
 bool Transaction::deposit(){

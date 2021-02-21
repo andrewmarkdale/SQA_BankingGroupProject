@@ -1,2 +1,4 @@
 01_withdrawaltest      _00007_500_
 00_withdrawaltest      _00000_00000.00_
+04_logintest           _00005_02000_
+00_logintest           _00000_00000.00_
