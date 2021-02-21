@@ -330,7 +330,7 @@ bool Transaction::logout(){
   for(int i = accountHolderName.length(); i < 20; i++){
     tempname += ' ';
   }
-  string appendToTransaction = string("00_")+string(accountHolderName)+string("_00000_")+string("00000.00_");
+  string appendToTransaction = string("00_")+tempname+string("_00000_")+string("00000.00_");
   writeTransactionFile << appendToTransaction <<endl;
   writeTransactionFile.close();
   return true;

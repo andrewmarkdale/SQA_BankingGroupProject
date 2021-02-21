@@ -22,3 +22,16 @@
 00_logintest           _00000_00000.00_
 08_logintest           _00005_00000.00_
 00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+04_logintest           _00005_2000_
+00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+04_logintest           _00005_20000_
+01_logintest           _00005_1500_
+00_logintest_00000_00000.00_
