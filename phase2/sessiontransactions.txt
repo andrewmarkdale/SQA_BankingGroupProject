@@ -19,3 +19,6 @@
 00_deletetest          _00000_00000.00_
 06_deletetest          _00888_00000.00_
 00_deletetest          _00000_00000.00_
+00_logintest           _00000_00000.00_
+08_logintest           _00005_00000.00_
+00_logintest           _00000_00000.00_
