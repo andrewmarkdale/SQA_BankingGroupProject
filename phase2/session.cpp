@@ -213,6 +213,8 @@ void Transaction::startCurrentTransaction(){
     Delete();
   }else if(currentTransaction == validTransactions[7]){
     create();
+  }else if(currentTransaction == validTransactions[8]){
+    changeplan();
   }
 }
 
