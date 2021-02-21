@@ -323,12 +323,31 @@ bool Transaction::deposit(){
   return false;
 }
 /*
+
 Paybill transaction, validates account number, validates payee and writes to
 transaction file once user has entered payment amount
+
+var paymentAmount -> user inputs amount to pay payee;
+
+validates credentials
+if false returns false
+
+validates payee entry to ensure valid company currently [EC, CQ, FI]
+if false returns false
+
+terminal prompts amount
+User inputs amount
+Currently accepts any amount
+terminal outputs confirmation
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
 */
 bool Transaction::paybill(){
   string paymentAmount;
-  string payee;
   cout << "enter the account number\n";
   cin >> accountNumber;
   if(validateAccountNumber()){
