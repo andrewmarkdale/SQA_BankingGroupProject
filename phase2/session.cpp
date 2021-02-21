@@ -213,6 +213,16 @@ bool Transaction::validatePlan(){
   validatePlan();
   return false;
 }
+/*
+
+Method validatePayee
+terminal prompts user to input string of payee
+user inputs string of payee
+
+if payee is a valid payee the method returns true
+
+
+*/
 
 bool Transaction::validatePayee(){
   cout << "enter the payee:\n";
@@ -377,6 +387,30 @@ bool Transaction::transfer(){
   return false;
 }
 
+/*
+
+changeplan transaction, validates account number, validates plan and writes to
+transaction file
+
+terminal prompts accountNumber;
+User inputs accountNumber;
+validates credentials
+if false returns false
+
+Calls validatePlan()
+Doesn't particularly matter if validatePLan returns false as it is handled
+within that method.
+
+
+Once confirmed the terminal outputs confirmation and writes to file
+depending on planType!
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
+
 bool Transaction::changeplan(){
   cout << "enter account number\n";
   cin >> accountNumber;
@@ -405,6 +439,28 @@ bool Transaction::changeplan(){
   }
   return false;
 }
+
+/*
+
+Deposit transaction, validates account number, validates amount and writes to
+transaction file
+
+var depositAmount -> user inputs amount to deposit;
+
+validates credentials
+if false returns false
+
+terminal prompts amount
+User inputs amount
+Currently accepts any amount
+terminal outputs confirmation
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 bool Transaction::deposit(){
   string depositAmount;
   cout << "enter account number\n";
@@ -542,6 +598,32 @@ bool Transaction::logout(){
   return true;
 };
 
+/*
+disable transaction, validates session type and writes to transaction file
+after user has input the confirmation character
+
+var d -> user inputs disable confirmation
+
+currently allows all session types
+to use disable()
+
+validates credentials
+if false returns false
+
+terminal prompts account name
+user enters account name
+terminal prompts account number
+user enters account number
+terminal prompts confirmation
+user enters confirmation
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
+
 
 bool Transaction::disable(){
   string d;
@@ -570,6 +652,33 @@ bool Transaction::disable(){
   }
   return false;
 }
+/*
+Create transaction, validates session type and writes to transaction file
+after user has input the account name, account number and balance
+
+var temp_name -> user inputs new account name
+var temp_num -> user inputs new account number
+var balance -> user inputs new balance
+
+currently allows all session types
+to use create()
+
+validates credentials
+if false returns false
+
+terminal prompts account name
+user enters account name
+terminal prompts account number
+user enters account number
+terminal prompts balance
+user enters balance
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 
 bool Transaction::create(){
   string temp_name;
@@ -596,7 +705,24 @@ bool Transaction::create(){
   return true;
 
 }
+/*
+Delete transaction, validates session type and writes to transaction file
+after user has input the account name, account number and balance
 
+currently allows all session types
+to use Delete()
+
+validates credentials
+if false returns false
+
+terminal prompts success message
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 bool Transaction::Delete(){
   string withdrawalamount;
   cout << "enter account number\n";
