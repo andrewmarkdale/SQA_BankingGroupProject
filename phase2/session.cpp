@@ -190,6 +190,7 @@ bool Transaction::validateAccountNumber(){
     }
     if(word[1] == accountHolderName && word[0] == accountNumber){
       //User currentUser(word[0], word[1], word[2], word[3]);
+      reader.close();
       return true;
     }
   }
