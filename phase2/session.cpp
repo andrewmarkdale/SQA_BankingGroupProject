@@ -16,6 +16,15 @@ class Session {
     bool validateAccountHolder();
 };
 
+/*
+  login will read in the first transaction as std input and save it to transaction variable
+
+  when the transaction is login the system will then call the method getsessionType
+
+  return type none
+  note: any invalid input for the first transaction will terminate the system
+  and the terminal will output invalid input
+*/
 void Session::login() {
   cin >> transaction;
   if(transaction == "login"){
@@ -26,6 +35,23 @@ void Session::login() {
   }
 };
 
+/*
+  getsessionType will read in session type as std input and save it to 
+  the variable sessionType
+
+  var accountHolderExist -> used to save if the account holder name exist
+
+  terminal output enter session type
+  user enters standard or admin
+    admin: will initiate transaction (not implemented yet)
+    standard: terminal outputs enter account holder name
+              user enters account holder name
+              system will then validate account holder name
+
+  return type none
+  note: any invalid input for session type or an account that does not exist will 
+  terminate the session
+*/
 void Session::getsessionType() {
   cout << "enter session type:\n";
   cin >> sessionType;
@@ -41,6 +67,21 @@ void Session::getsessionType() {
   }
 };
 
+
+/*
+  validateAccountHolder will validate if an account holder name is in the 
+  current bank account file
+
+  var line -> used to read file line by line
+  var word[4] -> used to store each word in a line(account number, account name, account status, balance)
+  var counter -> used to index word
+
+  if account holder name exist
+  return true
+
+  return false 
+  terminal outputs account not found
+*/
 bool Session::validateAccountHolder() {
   string line;
   ifstream reader("CurrentBankAccounts.txt");
@@ -66,20 +107,6 @@ bool Session::validateAccountHolder() {
   reader.close();
   return false;
 };
-
-// class User {
-//   public:
-//   string accountHolderName;
-//   string accountBalance;
-//   string accountNumber;
-//   string accountStatus;
-//   User(string number, string name, string status, string balance){
-//     accountHolderName = name;
-//     accountBalance = balance;
-//     accountNumber = number;
-//     accountStatus = status;
-//   };
-// };
 
 class Transaction {
   public:
@@ -134,13 +161,35 @@ class Transaction {
   void startCurrentTransaction();
 };
 
+/*
+  getTransaction will read in the transaction type as std input and
+  save it to the currentTransaction variable and then validate the transaction
+
+  terminal will output enter transaction type
+  user enters transaction type
+
+  return type none
+*/
 void Transaction::getTransaction(){
   cout << "enter transaction type\n";
   cin >> currentTransaction;
   validateTransaction();
 };
 
+/*
+  validateTransaction will validate if the transaction currently
+  entered by user is valid.
 
+  if the current transaction is valid
+  return true
+
+  terminal will output invalid input for any incorrect transaction 
+  and then call the method getTransaction
+
+  note: method will never return false, it will always prompt until 
+  a valid transaction is given
+  Session terminates when logout transaction is called
+*/
 bool Transaction::validateTransaction(){
   for(int i = 0; i < 9; i++){
     if(currentTransaction == validTransactions[i]){
@@ -177,6 +226,25 @@ bool Transaction::validatePayee(){
   return false;
 }
 
+/*
+  validateAccountNumber will validate if an account number is in the 
+  current bank account file and matches the account holder name
+
+  var line -> used to read file line by line
+  var word[4] -> used to store each word in a line(account number, account name, account status, balance)
+  var counter -> used to index word
+
+  if account holder name and number both exist on the same line
+  return true
+
+  special case for when the transaction being processed is transfer,
+  since it is the only transaction involving two account it will 
+  check that the account number to transfer also exist. 
+  return true
+
+  return false 
+  terminal outputs account number not found
+*/
 bool Transaction::validateAccountNumber(){
   string line;
   ifstream reader("CurrentBankAccounts.txt");
@@ -206,6 +274,14 @@ bool Transaction::validateAccountNumber(){
   reader.close();
 };
 
+
+/*
+  startCurrentTansaction will initiate the users currentTransaction
+  by checking validTransactions array and then calling the related
+  transaction method
+
+  No return type
+*/
 void Transaction::startCurrentTransaction(){
   if(currentTransaction == validTransactions[0]){
     logout();
@@ -227,7 +303,35 @@ void Transaction::startCurrentTransaction(){
     changeplan();
   }
 }
+/***************************************************************************************************
+tranfer transaction, validates account number (from), validates account number (to) and writes to
+transaction file once user has entered transfer amount
 
+var transferamount -> user inputs amount to transfer;
+
+validates account(from) credentials
+if false returns false
+
+validates account(to) credentials
+if false returns false
+
+validates transferlimit for standard session is 1000
+if false returns false
+
+terminal prompts account number(from)
+user inputs accountNumber(from)
+terminal prompts account number(to)
+user inputs accountNumber(to)
+terminal prompts transfer amount
+user inputs transfer amount
+terminal outputs transfer successful
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+****************************************************************************************************/
 bool Transaction::transfer(){
   string transferamount;
   cout << "enter account number(from):\n";
@@ -370,7 +474,28 @@ bool Transaction::paybill(){
   }
   return false;
 }
+/*
+withdrawal transaction, validates account number, and writes to
+transaction file once user has entered withdrawal amount
 
+var withdrawalamount -> user inputs amount for withdrawal;
+
+validates account credentials
+if false returns false
+
+terminal prompts account number
+user inputs account number
+terminal prompts withdrawal amount
+user inputs withdrawal amount
+currently accepts any withdrawal amount
+terminal outputs withdrawal successful
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 bool Transaction::withdrawal(){
   string withdrawalamount;
   cout << "enter account number\n";
@@ -393,6 +518,16 @@ bool Transaction::withdrawal(){
   return false;
 }
 
+/*
+logout transaction, writes the final line of the transaction file,
+and will end the current session
+
+opens transaction file
+Once confirmed, writes to transaction file
+closes transaction file
+
+returns true
+*/
 bool Transaction::logout(){
   ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
   // This tempname isn't strictly necessary but I figured for consistency
