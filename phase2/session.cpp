@@ -236,6 +236,10 @@ bool Transaction::transfer(){
     if(validateAccountNumber()){
       cout <<"enter transfer amount:\n";
       cin >> transferamount;
+      if(::atof(transferamount.c_str()) > 1000){
+        cout << "limit for standard transfer is 1000\n";
+        return false;
+      }
       cout <<"transfer successful\n";
 
       ofstream writeTransactionFile("sessiontransactions.txt",ios::app);

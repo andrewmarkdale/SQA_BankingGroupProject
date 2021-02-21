@@ -3,3 +3,15 @@
 02_transfertest        _00009_400_
 02_logintest           _00005_400_
 00_transfertest        _00000_00000.00_
+04_logintest           _00005_2000_
+02_logintest           _00005_2000_
+02_logouttest          _00006_2000_
+00_logintest           _00000_00000.00_
+02_logintest           _00005_2000_
+02_withdrawaltest2     _00008_2000_
+02_logintest           _00005_20000_
+02_withdrawaltest2     _00008_20000_
+00_logintest           _00000_00000.00_
+02_logintest           _00005_1001_
+02_logouttest          _00006_1001_
+00_logintest           _00000_00000.00_
