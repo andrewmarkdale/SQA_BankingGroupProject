@@ -1,12 +1,12 @@
-#include<iostream>  
+#include<iostream>
 #include <string>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <fstream>
-  
-using namespace std; 
+
+using namespace std;
 
 class Session {
-  public:            
+  public:
     string sessionType;
     string transaction;
     string accountHolderName;
@@ -67,7 +67,7 @@ bool Session::validateAccountHolder() {
 };
 
 // class User {
-//   public:            
+//   public:
 //   string accountHolderName;
 //   string accountBalance;
 //   string accountNumber;
@@ -81,22 +81,27 @@ bool Session::validateAccountHolder() {
 // };
 
 class Transaction {
-  public:            
+  public:
   string currentTransaction;
   string transactionCode;
   string validTransactions[9];
-  string accountHolderName;  
+  string currentPayee;
+  string validPayees[3];
+  string accountHolderName;
   string accountNumber;
   Transaction(Session currentsession){
-    validTransactions[0] = "logout"; 
+    validTransactions[0] = "logout";
     validTransactions[1] = "withdrawal";
-    validTransactions[2] = "deposit"; 
-    validTransactions[3] = "transfer"; 
-    validTransactions[4] = "paybill"; 
-    validTransactions[5] = "disable"; 
-    validTransactions[6] = "delete"; 
-    validTransactions[7] = "create";  
-    validTransactions[8] = "changeplan";  
+    validTransactions[2] = "deposit";
+    validTransactions[3] = "transfer";
+    validTransactions[4] = "paybill";
+    validTransactions[5] = "disable";
+    validTransactions[6] = "delete";
+    validTransactions[7] = "create";
+    validTransactions[8] = "changeplan";
+    validPayees[0] = "EC";
+    validPayees[1] = "CQ";
+    validPayees[2] = "FI";
     if(currentsession.sessionType == "standard"){
       accountHolderName = currentsession.accountHolderName;
     }else{
@@ -105,6 +110,8 @@ class Transaction {
   };
   void getTransaction();
   bool validateTransaction();
+  void getPayee();
+  bool validatePayee();
   bool validateAccountNumber();
   bool logout();
   bool withdrawal();
@@ -124,6 +131,7 @@ void Transaction::getTransaction(){
   validateTransaction();
 };
 
+
 bool Transaction::validateTransaction(){
   for(int i = 0; i < 9; i++){
     if(currentTransaction == validTransactions[i]){
@@ -134,6 +142,22 @@ bool Transaction::validateTransaction(){
   getTransaction();
   return false;
 };
+
+void Transaction::getPayee(){
+  cout << "enter the payee:\n";
+  cin >> currentPayee;
+  validatePayee;
+}
+
+bool Transaction::validatePayee(){
+  for(int i = 0; i < 3; i++){
+    if(currentPayee == validPayees[i]){
+      return true;
+    }
+  }
+  cout << "invalid input\n";
+  return false;
+}
 
 bool Transaction::validateAccountNumber(){
   string line;
@@ -167,6 +191,58 @@ void Transaction::startCurrentTransaction(){
   }else if(currentTransaction == validTransactions[1]){
     withdrawal();
   }
+}
+bool Transaction::deposit(){
+  string depositAmount;
+  cout << "enter account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    cout << "enter deposit amount\n";
+    cin >> depositAmount;
+    cout << "deposit successful\n";
+
+    ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    for(int i = accountHolderName.length(); i<20; i++){
+      accountHolderName += ' ';
+    }
+    string appendToTransaction = "04_"+accountHolderName+"_"+accountNumber+"_"+depositAmount+"_";
+    writeTransactionFile << appendToTransaction << endl;
+    writeTransactionFile.close();
+    return true;
+  }
+  return false;
+}
+/*
+
+Paybill transaction, validates account number, validates payee and writes to
+transaction file once user has entered payment amount
+
+*/
+bool Transaction::paybill(){
+  string paymentAmount;
+  string payee;
+  cout << "enter the account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    cout << "enter the payee:\n";
+    cin >> payee;
+    if(validatePayee()){
+      cout << "enter the amount:\n";
+      cin >> paymentAmount;
+      cout << "payment successful\n";
+
+      ofstream writeTransactionFile("sessiontransactions.txt", ios::app);
+      for(int i = accountHolderName.length(); i<20;i++){
+        accountHolderName += ' ';
+      }
+      string appendToTransaction = "03_"+accountHolderName+"_"+accountNumber+"_"+paymentAmount+"_";
+      writeTransactionFile << appendToTransaction << endl;
+      writeTransactionFile.close();
+      return true;
+    }
+    return false;
+  }
+  return false;
 }
 
 bool Transaction::withdrawal(){
@@ -204,15 +280,15 @@ bool Transaction::logout(){
 
 
 //This system is an automated teller machine terminal for simple banking transactions.
-//The program is intended to run from the terminal where a session will be started and 
+//The program is intended to run from the terminal where a session will be started and
 //  process valid transactions for that session. A session will begin when 'login' is entered
 //  and will end after logout.
-//Input: currentBankAccount file 
+//Input: currentBankAccount file
 //Output: bankAccountTransaction file
-int main() 
-{ 
-    cout << "welcome to the banking system\n"; 
-    Session newSession; 
+int main()
+{
+    cout << "welcome to the banking system\n";
+    Session newSession;
     newSession.login();
     if(newSession.accountHolderExist){
       Transaction newTransaction(newSession);
@@ -225,5 +301,5 @@ int main()
     }else{
       exit(0);
     }
-    return 0; 
+    return 0;
 }
