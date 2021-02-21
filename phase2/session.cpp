@@ -66,12 +66,27 @@ bool Session::validateAccountHolder() {
   reader.close();
 };
 
+// class User {
+//   public:            
+//   string accountHolderName;
+//   string accountBalance;
+//   string accountNumber;
+//   string accountStatus;
+//   User(string number, string name, string status, string balance){
+//     accountHolderName = name;
+//     accountBalance = balance;
+//     accountNumber = number;
+//     accountStatus = status;
+//   };
+// };
+
 class Transaction {
   public:            
   string currentTransaction;
   string transactionCode;
   string validTransactions[9];
   string accountHolderName;  
+  string accountNumber;
   Transaction(Session currentsession){
     validTransactions[0] = "logout"; 
     validTransactions[1] = "withdrawal";
@@ -90,6 +105,7 @@ class Transaction {
   };
   void getTransaction();
   bool validateTransaction();
+  bool validateAccountNumber();
   bool logout();
   bool withdrawal();
   bool deposit();
@@ -116,34 +132,75 @@ bool Transaction::validateTransaction(){
   }
   cout << "invalid input\n";
   getTransaction();
+  return false;
+};
+
+bool Transaction::validateAccountNumber(){
+  string line;
+  ifstream reader("CurrentBankAccounts.txt");
+  while (getline (reader, line)) {
+    string word[4];
+    int counter = 0;
+    for(int i = 0; i < line.length(); i++){
+      if(line[i] == '_'){
+        counter++;
+      }else if(line[i] == ' '){
+
+      }
+      else{
+        word[counter] += line[i];
+      }
+    }
+    if(word[1] == accountHolderName && word[0] == accountNumber){
+      //User currentUser(word[0], word[1], word[2], word[3]);
+      return true;
+    }
+  }
+  cout << "account number not found\n";
+  return false;
+  reader.close();
 };
 
 void Transaction::startCurrentTransaction(){
   if(currentTransaction == validTransactions[0]){
     logout();
+  }else if(currentTransaction == validTransactions[1]){
+    withdrawal();
   }
 }
 
+bool Transaction::withdrawal(){
+  string withdrawalamount;
+  cout << "enter account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    cout << "enter withdrawal amount\n";
+    cin >> withdrawalamount;
+    cout << "withdrawal successful\n";
+
+    ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    for(int i = accountHolderName.length(); i < 20; i++){
+      accountHolderName += ' ';
+    }
+    string appendToTransaction = "01_"+accountHolderName+"_"+accountNumber+"_"+withdrawalamount+"_";
+    writeTransactionFile << appendToTransaction <<endl;
+    writeTransactionFile.close();
+    return true;
+  }
+  return false;
+}
 
 bool Transaction::logout(){
-  ofstream writeTransactionFile("sessiontransactions.txt");
+  ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
   for(int i = accountHolderName.length(); i < 20; i++){
     accountHolderName += ' ';
   }
   string appendToTransaction = string("00_")+string(accountHolderName)+string("_00000_")+string("00000.00_");
-  writeTransactionFile << appendToTransaction;
+  writeTransactionFile << appendToTransaction <<endl;
   writeTransactionFile.close();
   return true;
 };
 
-
-class User {
-  public:            
-  string accountHoldername;
-  float accountBalance;
-  string accountNumber;
-  char accountStatus;
-};
 
 
 //This system is an automated teller machine terminal for simple banking transactions.
@@ -160,7 +217,11 @@ int main()
     if(newSession.accountHolderExist){
       Transaction newTransaction(newSession);
       newTransaction.getTransaction();
-      newTransaction.startCurrentTransaction();
+      while(newTransaction.currentTransaction != "logout"){
+              newTransaction.startCurrentTransaction();
+              newTransaction.getTransaction();
+      }
+      newTransaction.logout();
     }else{
       exit(0);
     }
