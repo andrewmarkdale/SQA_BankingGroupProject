@@ -257,10 +257,11 @@ bool Transaction::deposit(){
     cout << "deposit successful\n";
 
     ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    string tempname = accountHolderName;
     for(int i = accountHolderName.length(); i<20; i++){
-      accountHolderName += ' ';
+      tempname += ' ';
     }
-    string appendToTransaction = "04_"+accountHolderName+"_"+accountNumber+"_"+depositAmount+"_";
+    string appendToTransaction = "04_"+tempname+"_"+accountNumber+"_"+depositAmount+"_";
     writeTransactionFile << appendToTransaction << endl;
     writeTransactionFile.close();
     return true;
@@ -285,10 +286,11 @@ bool Transaction::paybill(){
       cout << "payment successful\n";
 
       ofstream writeTransactionFile("sessiontransactions.txt", ios::app);
+      string tempname = accountHolderName;
       for(int i = accountHolderName.length(); i<20;i++){
-        accountHolderName += ' ';
+        tempname += ' ';
       }
-      string appendToTransaction = "03_"+accountHolderName+"_"+accountNumber+"_"+paymentAmount+"_";
+      string appendToTransaction = "03_"+tempname+"_"+accountNumber+"_"+paymentAmount+"_";
       writeTransactionFile << appendToTransaction << endl;
       writeTransactionFile.close();
       return true;
@@ -308,10 +310,11 @@ bool Transaction::withdrawal(){
     cout << "withdrawal successful\n";
 
     ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    string tempname = accountHolderName;
     for(int i = accountHolderName.length(); i < 20; i++){
-      accountHolderName += ' ';
+      tempname += ' ';
     }
-    string appendToTransaction = "01_"+accountHolderName+"_"+accountNumber+"_"+withdrawalamount+"_";
+    string appendToTransaction = "01_"+tempname+"_"+accountNumber+"_"+withdrawalamount+"_";
     writeTransactionFile << appendToTransaction <<endl;
     writeTransactionFile.close();
     return true;
@@ -321,8 +324,11 @@ bool Transaction::withdrawal(){
 
 bool Transaction::logout(){
   ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+  // This tempname isn't strictly necessary but I figured for consistency
+  // may as well add it.
+  string tempname = accountHolderName;
   for(int i = accountHolderName.length(); i < 20; i++){
-    accountHolderName += ' ';
+    tempname += ' ';
   }
   string appendToTransaction = string("00_")+string(accountHolderName)+string("_00000_")+string("00000.00_");
   writeTransactionFile << appendToTransaction <<endl;
@@ -342,10 +348,11 @@ bool Transaction::disable(){
         cout << "disable successful\n";
 
         ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+        string tempname = accountHolderName;
         for(int i = accountHolderName.length(); i < 20; i++){
-          accountHolderName += ' ';
+          tempname += ' ';
         }
-        string appendToTransaction = string("05_")+string(accountHolderName)+string(accountNumber)+string("00000.00_")+string("_")+string("D");
+        string appendToTransaction = string("05_")+tempname+string(accountNumber)+string("00000.00_")+string("_")+string("D");
         writeTransactionFile << appendToTransaction <<endl;
         writeTransactionFile.close();
         return true;
@@ -391,10 +398,11 @@ bool Transaction::Delete(){
   if(validateAccountNumber()){
 
     ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    string tempname = accountHolderName;
     for(int i = accountHolderName.length(); i < 20; i++){
-      accountHolderName += ' ';
+      tempname += ' ';
     }
-    string appendToTransaction = "06_"+accountHolderName+"_"+accountNumber+"_"+string("00000.00_");
+    string appendToTransaction = "06_"+tempname+"_"+accountNumber+"_"+string("00000.00_");
     writeTransactionFile << appendToTransaction <<endl;
     writeTransactionFile.close();
     return true;
