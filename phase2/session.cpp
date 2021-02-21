@@ -110,7 +110,6 @@ class Transaction {
   };
   void getTransaction();
   bool validateTransaction();
-  void getPayee();
   bool validatePayee();
   bool validateAccountNumber();
   bool logout();
@@ -142,12 +141,7 @@ bool Transaction::validateTransaction(){
   getTransaction();
   return false;
 };
-/*
-void Transaction::getPayee(){
-  cout << "enter the payee:\n";
-  cin >> currentPayee;
-  validatePayee();
-} */
+
 
 bool Transaction::validatePayee(){
   cout << "enter the payee:\n";
@@ -230,8 +224,6 @@ bool Transaction::paybill(){
   cout << "enter the account number\n";
   cin >> accountNumber;
   if(validateAccountNumber()){
-    cout << "enter the payee:\n";
-    cin >> payee;
     if(validatePayee()){
       cout << "enter the amount:\n";
       cin >> paymentAmount;
