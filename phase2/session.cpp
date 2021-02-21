@@ -94,6 +94,7 @@ class Transaction {
   string accountNumber;
   string accountNumberTo;
   string accountHolderNameTo;
+  string sessiontype;
   Transaction(Session currentsession){
     validTransactions[0] = "logout";
     validTransactions[1] = "withdrawal";
@@ -109,6 +110,7 @@ class Transaction {
     validPayees[2] = "FI";
     validPlans[0] = "NP";
     validPlans[1] = "SP";
+    sessiontype = currentsession.sessionType;
     if(currentsession.sessionType == "standard"){
       accountHolderName = currentsession.accountHolderName;
     }else{
@@ -236,8 +238,10 @@ bool Transaction::transfer(){
     if(validateAccountNumber()){
       cout <<"enter transfer amount:\n";
       cin >> transferamount;
-      if(::atof(transferamount.c_str()) > 1000){
+      if(::atof(transferamount.c_str()) > 1000 && sessiontype == "standard"){
         cout << "limit for standard transfer is 1000\n";
+        accountNumberTo ="";
+        accountHolderNameTo ="";
         return false;
       }
       cout <<"transfer successful\n";

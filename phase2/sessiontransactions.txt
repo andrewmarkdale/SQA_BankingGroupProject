@@ -15,3 +15,4 @@
 02_logintest           _00005_1001_
 02_logouttest          _00006_1001_
 00_logintest           _00000_00000.00_
+00_logintest           _00000_00000.00_
