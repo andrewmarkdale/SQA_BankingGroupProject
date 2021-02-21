@@ -190,6 +190,12 @@ void Transaction::startCurrentTransaction(){
     deposit();
   }else if(currentTransaction == validTransactions[4]){
     paybill();
+  }else if(currentTransaction == validTransactions[5]){
+    disable();
+  }else if(currentTransaction == validTransactions[6]){
+    Delete();
+  }else if(currentTransaction == validTransactions[7]){
+    create();
   }
 }
 bool Transaction::deposit(){
@@ -276,6 +282,76 @@ bool Transaction::logout(){
 };
 
 
+bool Transaction::disable(){
+  string d;
+  cout << "enter account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+    cout << "enter lowercase d to disable\n";
+    cin >> d;
+      if(d == "d"){
+        cout << "disable successful\n";
+
+        ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+        for(int i = accountHolderName.length(); i < 20; i++){
+          accountHolderName += ' ';
+        }
+        string appendToTransaction = string("05_")+string(accountHolderName)+string(accountNumber)+string("00000.00_")+string("_")+string("D");
+        writeTransactionFile << appendToTransaction <<endl;
+        writeTransactionFile.close();
+        return true;
+      }
+      else{
+        cout << "not lowercase d\n";
+      }
+
+  }
+  return false;
+}
+
+bool Transaction::create(){
+  string temp_name;
+  string temp_num;
+  string balance;
+
+  cout << "enter account name\n";
+  cin >> temp_name;
+
+  cout  << "enter account number\n";
+  cin >> temp_num;
+
+  cout << "enter balance: \n";
+  cin >> balance;
+
+  ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+  for(int i = temp_name.length(); i < 20; i++){
+    temp_name += ' ';
+  }
+
+  string appendToTransaction = string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_");
+  writeTransactionFile << appendToTransaction <<endl;
+  writeTransactionFile.close();
+  return true;
+
+}
+
+bool Transaction::Delete(){
+  string withdrawalamount;
+  cout << "enter account number\n";
+  cin >> accountNumber;
+  if(validateAccountNumber()){
+
+    ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+    for(int i = accountHolderName.length(); i < 20; i++){
+      accountHolderName += ' ';
+    }
+    string appendToTransaction = "06_"+accountHolderName+"_"+accountNumber+"_"+string("00000.00_");
+    writeTransactionFile << appendToTransaction <<endl;
+    writeTransactionFile.close();
+    return true;
+  }
+  return false;
+}
 
 //This system is an automated teller machine terminal for simple banking transactions.
 //The program is intended to run from the terminal where a session will be started and
