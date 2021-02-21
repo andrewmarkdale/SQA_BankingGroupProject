@@ -34,7 +34,7 @@ void Session::getsessionType() {
     cin >> accountHolderName;
     accountHolderExist = validateAccountHolder();
   }else if (sessionType == "admin"){
-    //Do something
+    getTransaction();
   }else{
       cout << "invalid input\n";
       exit(0);
@@ -58,12 +58,13 @@ bool Session::validateAccountHolder() {
       }
     }
     if(word[1] == accountHolderName){
+      reader.close();
       return true;
     }
   }
   cout << "account not found\n";
-  return false;
   reader.close();
+  return false;
 };
 
 // class User {
