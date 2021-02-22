@@ -16,3 +16,11 @@
 02_logouttest          _00006_1001_
 00_logintest           _00000_00000.00_
 00_logintest           _00000_00000.00_
+04_logintest           _00005_20000_
+01_logintest           _00005_2000_
+00_logintest           _00000_00000.00_
+04_logintest           _00005_20000_
+01_logintest           _00005_2000_
+00_logintest           _00000_00000.00_
+04_logintest           _00005_2000.00_
+00_logintest           _00000_00000.00_

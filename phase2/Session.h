@@ -1,7 +1,14 @@
-#ifndef Session
-#define Session
+#include<iostream>
+#include <string>
+#include <stdlib.h>
+#include <fstream>
 
 
+#ifndef SESSION
+#define SESSION
+
+
+using namespace std;
 class Session {
   public:
     string sessionType;
@@ -12,3 +19,4 @@ class Session {
     void getsessionType();
     bool validateAccountHolder();
 };
+#endif

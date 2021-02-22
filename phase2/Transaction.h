@@ -1,6 +1,12 @@
-#ifndef Transaction
-#define Transaction
+#include<iostream>
+#include <string>
+#include <stdlib.h>
+#include <fstream>
+#include "Session.h"
+#ifndef TRANSACTION
+#define TRANSACTION
 
+using namespace std;
 
 class Transaction {
   public:
@@ -54,3 +60,4 @@ class Transaction {
   bool create();
   void startCurrentTransaction();
 };
+#endif
