@@ -45,6 +45,7 @@ class Transaction {
   string accountNumberTo;
   string accountHolderNameTo;
   string sessiontype;
+  string appendTosessionTransactionFile;
   Transaction(Session currentsession){
     validTransactions[0] = "logout";
     validTransactions[1] = "withdrawal";
