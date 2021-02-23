@@ -8,6 +8,29 @@
 
 using namespace std;
 
+
+/*
+
+Transaction class will take an instance of Session as a parameter and will
+then begin accepting transactions.
+
+Transactions consist of the following:
+logout
+withdrawal
+deposit
+transfer
+paybill
+disable
+delete
+create
+changeplan
+
+Handles all transactions. 
+
+*/
+
+
+
 class Transaction {
   public:
   string currentTransaction;

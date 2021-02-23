@@ -45,6 +45,25 @@ bool Transaction::validateTransaction(){
   return false;
 };
 
+/*
+
+validatePlan takes input and will validate whether or not the input from the
+user matches the allowed plans in the validPlans list. List can be quickly 
+altered to allow new plans to be added.
+
+if valid plan type is entered
+return true
+
+if invalid plan type is entered
+output "unknown plan"
+start validate plan again. ****
+
+
+**** This will be altered, our tests are off: If plan is invalid should output
+invalid input and return to getTransaction.
+
+*/
+
 bool Transaction::validatePlan(){
   cout << "enter account type (SP - student, NP - standard):\n";
   cin >> planType;
@@ -59,11 +78,19 @@ bool Transaction::validatePlan(){
 }
 /*
 
+validatePlan takes input and will validate whether or not the input from the
+user matches the allowed payees in the validPayees list. List can be quickly
+altered to allow new companies to be added.
+
 Method validatePayee
 terminal prompts user to input string of payee
 user inputs string of payee
 
-if payee is a valid payee the method returns true
+if payee is a valid payee the method
+return true
+
+if payee is invalid
+return false
 
 
 */
