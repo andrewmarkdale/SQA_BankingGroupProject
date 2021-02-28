@@ -72,6 +72,7 @@ class Transaction {
   bool validateTransaction();
   bool validatePayee();
   bool validatePlan();
+  bool validateAccountHolder();
   bool validateAccountNumber();
   bool logout();
   bool withdrawal();

@@ -13,12 +13,17 @@ using namespace std;
 //  and will end after logout.
 //Input: currentBankAccount file
 //Output: bankAccountTransaction file
-int main()
+int main(int argc, char** argv)
 {
+  // if(argc != 3){
+  //   cout << "Usage: ./main currentbankaccountfile outputfile\n";
+  //   exit(0);
+  // }
+
     cout << "welcome to the banking system\n";
     Session newSession;
     newSession.login();
-    if(newSession.accountHolderExist){
+    if(newSession.accountHolderExist || newSession.sessionType == "admin"){
       Transaction newTransaction(newSession);
       newTransaction.getTransaction();
       while(newTransaction.currentTransaction != "logout"){

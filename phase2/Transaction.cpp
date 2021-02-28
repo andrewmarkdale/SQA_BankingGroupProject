@@ -108,6 +108,47 @@ bool Transaction::validatePayee(){
 }
 
 /*
+  validateAccountHolder will validate if an account holder name is in the
+  current bank account file
+
+  var line -> used to read file line by line
+  var word[4] -> used to store each word in a line(account number, account name, account status, balance)
+  var counter -> used to index word
+
+  if account holder name exist
+  return true
+
+  return false
+  terminal outputs account not found
+*/
+
+bool Transaction::validateAccountHolder() {
+  string line;
+  ifstream reader("CurrentBankAccounts.txt");
+  while (getline (reader, line)) {
+    string word[4];
+    int counter = 0;
+    for(int i = 0; i < line.length(); i++){
+      if(line[i] == '_'){
+        counter++;
+      }else if(line[i] == ' '){
+
+      }
+      else{
+        word[counter] += line[i];
+      }
+    }
+    if(word[1] == accountHolderName){
+      reader.close();
+      return true;
+    }
+  }
+  cout << "account not found\n";
+  reader.close();
+  return false;
+};
+
+/*
   validateAccountNumber will validate if an account number is in the
   current bank account file and matches the account holder name
 
@@ -214,6 +255,15 @@ closes transaction file
 returns true
 ****************************************************************************************************/
 bool Transaction::transfer(){
+
+  if(sessiontype == "admin"){
+    cout << "enter account holder name:\n";
+    cin >> accountHolderName;
+    if(validateAccountHolder() == false){
+      accountHolderName = "";
+      return false;
+    }
+  }
   string transferamount;
   cout << "enter account number(from):\n";
   cin >> accountNumber;
@@ -242,13 +292,16 @@ bool Transaction::transfer(){
       appendTosessionTransactionFile += "02_"+accountHolderNameTo+"_"+accountNumberTo+"_"+transferamount+"_\n";
       accountNumberTo ="";
       accountHolderNameTo ="";
+      if(sessiontype == "admin"){accountHolderName = "";}
       return true;
     }else{
+      if(sessiontype == "admin"){accountHolderName = "";}
       accountNumberTo ="";
       accountHolderNameTo ="";
       return false;
     }
   }
+  if(sessiontype == "admin"){accountHolderName = "";}
   accountNumberTo ="";
   accountHolderNameTo ="";
   return false;
@@ -279,6 +332,18 @@ returns true
 */
 
 bool Transaction::changeplan(){
+  if(sessiontype == "standard"){
+    cout << "privileged transaction\n";
+    return false;
+  }
+
+  cout << "enter account holder name:\n";
+  cin >> accountHolderName;
+  if(validateAccountHolder() == false){
+    accountHolderName = "";
+    return false;
+  }
+
   cout << "enter account number\n";
   cin >> accountNumber;
   if(validateAccountNumber()){
@@ -290,16 +355,18 @@ bool Transaction::changeplan(){
       if(planType == "NP"){
         cout << "account updated to non-student\n";
         appendTosessionTransactionFile += "08_"+tempname+"_"+accountNumber+"_00000.00_\n";
-
+        accountHolderName = "";
         return true;
       }
       else if(planType == "SP"){
         cout << "account updated to student\n";
         appendTosessionTransactionFile += "08_"+tempname+"_"+accountNumber+"_00000.00_\n";
+        accountHolderName = "";
         return true;
       }
     }
   }
+  accountHolderName = "";
   return false;
 }
 
@@ -325,6 +392,14 @@ closes transaction file
 returns true
 */
 bool Transaction::deposit(){
+    if(sessiontype == "admin"){
+    cout << "enter account holder name:\n";
+    cin >> accountHolderName;
+    if(validateAccountHolder() == false){
+      accountHolderName = "";
+      return false;
+    }
+  }
   string depositAmount;
   cout << "enter account number\n";
   cin >> accountNumber;
@@ -339,8 +414,10 @@ bool Transaction::deposit(){
     }
     appendTosessionTransactionFile += "04_"+tempname+"_"+accountNumber+"_"+depositAmount+"_\n";
 
+    if(sessiontype == "admin"){accountHolderName = "";}
     return true;
   }
+  if(sessiontype == "admin"){accountHolderName = "";}
   return false;
 }
 /*
@@ -368,6 +445,15 @@ closes transaction file
 returns true
 */
 bool Transaction::paybill(){
+  if(sessiontype == "admin"){
+    cout << "enter account holder name:\n";
+    cin >> accountHolderName;
+    if(validateAccountHolder() == false){
+      accountHolderName = "";
+      return false;
+    }
+  }
+
   string paymentAmount;
   cout << "enter the account number\n";
   cin >> accountNumber;
@@ -382,10 +468,13 @@ bool Transaction::paybill(){
         tempname += ' ';
       }
       appendTosessionTransactionFile += "03_"+tempname+"_"+accountNumber+"_"+paymentAmount+"_\n";
+      if(sessiontype == "admin"){accountHolderName = "";}
       return true;
     }
+    if(sessiontype == "admin"){accountHolderName = "";}
     return false;
   }
+  if(sessiontype == "admin"){accountHolderName = "";}
   return false;
 }
 /*
@@ -411,6 +500,16 @@ closes transaction file
 returns true
 */
 bool Transaction::withdrawal(){
+
+  if(sessiontype == "admin"){
+    cout << "enter account holder name:\n";
+    cin >> accountHolderName;
+    if(validateAccountHolder() == false){
+      accountHolderName = "";
+      return false;
+    }
+  }
+
   string withdrawalamount;
   cout << "enter account number\n";
   cin >> accountNumber;
@@ -424,8 +523,10 @@ bool Transaction::withdrawal(){
       tempname += ' ';
     }
     appendTosessionTransactionFile += "01_"+tempname+"_"+accountNumber+"_"+withdrawalamount+"_\n";
+    if(sessiontype == "admin"){accountHolderName = "";}
     return true;
   }
+  if(sessiontype == "admin"){accountHolderName = "";}
   return false;
 }
 
@@ -440,7 +541,7 @@ closes transaction file
 returns true
 */
 bool Transaction::logout(){
-  ofstream writeTransactionFile("sessiontransactions.txt",ios::app);
+  ofstream writeTransactionFile("sessiontransactions.txt");
   // This tempname isn't strictly necessary but I figured for consistency
   // may as well add it.
   string tempname = accountHolderName;
@@ -481,6 +582,18 @@ returns true
 
 
 bool Transaction::disable(){
+  if(sessiontype == "standard"){
+    cout << "privileged transaction\n";
+    return false;
+  }
+
+  cout << "enter account holder name:\n";
+  cin >> accountHolderName;
+  if(validateAccountHolder() == false){
+    accountHolderName = "";
+    return false;
+  }
+
   string d;
   cout << "enter account number\n";
   cin >> accountNumber;
@@ -494,8 +607,9 @@ bool Transaction::disable(){
         for(int i = accountHolderName.length(); i < 20; i++){
           tempname += ' ';
         }
-        appendTosessionTransactionFile += string("05_")+tempname+string(accountNumber)+string("00000.00_")+string("_")+string("D\n");
+        appendTosessionTransactionFile += string("05_")+tempname+"_"+string(accountNumber)+"_"+string("00000.00_")+string("_")+string("D\n");
 
+        accountHolderName = "";
         return true;
       }
       else{
@@ -503,6 +617,7 @@ bool Transaction::disable(){
       }
 
   }
+  accountHolderName = "";
   return false;
 }
 /*
@@ -534,6 +649,11 @@ returns true
 */
 
 bool Transaction::create(){
+
+  if(sessiontype == "standard"){
+    cout << "privileged transaction\n";
+    return false;
+  }
   string temp_name;
   string temp_num;
   string balance;
@@ -551,7 +671,7 @@ bool Transaction::create(){
     temp_name += ' ';
   }
 
-  appendTosessionTransactionFile += string("07_")+string(temp_name)+string(temp_num)+string("_")+string(balance)+string("_\n");
+  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(temp_num)+string("_")+string(balance)+"_"+string("\n");
 
   return true;
 
@@ -575,7 +695,18 @@ closes transaction file
 returns true
 */
 bool Transaction::Delete(){
-  string withdrawalamount;
+  if(sessiontype == "standard"){
+    cout << "privileged transaction\n";
+    return false;
+  }
+
+  cout << "enter account holder name:\n";
+  cin >> accountHolderName;
+  if(validateAccountHolder() == false){
+    accountHolderName = "";
+    return false;
+  }
+
   cout << "enter account number\n";
   cin >> accountNumber;
   if(validateAccountNumber()){
@@ -586,7 +717,9 @@ bool Transaction::Delete(){
     }
     appendTosessionTransactionFile += "06_"+tempname+"_"+accountNumber+"_"+string("00000.00_\n");
 
+    accountHolderName = "";
     return true;
   }
+  accountHolderName = "";
   return false;
 }
