@@ -1,0 +1,16 @@
+welcome to the banking system
+enter session type:
+enter account holder name:
+login accepted
+enter transaction type:
+enter account number(from):
+enter account number(to):
+enter total transfer amount:
+insufficient funds in account
+enter transaction type:
+enter account number(from):
+enter account number(to):
+enter total transfer amount:
+transaction successful
+enter transaction type:
+session terminated
