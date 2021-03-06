@@ -3,6 +3,7 @@
 #include <string>
 #include <stdlib.h>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 /*
@@ -83,7 +84,7 @@ bool Transaction::validatePlan(){
   cout << "unknown plan\n";
   validatePlan();
   return false;
-}
+};
 /*
 
 validatePlan takes input and will validate whether or not the input from the
@@ -114,7 +115,7 @@ bool Transaction::validatePayee(){
   }
   cout << "invalid input\n";
   return false;
-}
+};
 
 /*
   validateAccountHolder will validate if an account holder name is in the
@@ -203,7 +204,7 @@ bool Transaction::validateAccountNumber(){
   cout << "account number not found\n";
   return false;
   reader.close();
-};
+}
 
 
 /*
@@ -233,7 +234,36 @@ void Transaction::startCurrentTransaction(){
   }else if(currentTransaction == validTransactions[8]){
     changeplan();
   }
-}
+};
+
+bool Transaction::checkAccountNumber(string temp_num){
+  string line;
+  ifstream reader(currentBankAccountFile);
+  while (getline (reader, line)) {
+    string word[4];
+    int counter = 0;
+    for(int i = 0; i < line.length(); i++){
+      if(line[i] == '_'){
+        counter++;
+      }else if(line[i] == ' '){
+
+      }
+      else{
+        word[counter] += line[i];
+      }
+    }
+
+    if(word[0] != temp_num){
+      return true;
+    }
+    else{
+      cout << "account number already created\n";
+      return false;
+    }
+  }
+
+  reader.close();
+};
 /***************************************************************************************************
 tranfer transaction, validates account number (from), validates account number (to) and writes to
 transaction file once user has entered transfer amount
@@ -683,14 +713,35 @@ bool Transaction::create(){
     return false;
   }
   string temp_name;
-  string temp_num;
+  int temp_num;
+  string accountNumber;
   string balance;
+  bool check = false;
 
-  cout << "enter account name\n";
+  cout << "enter account name: \n";
   cin >> temp_name;
 
-  cout  << "enter account number\n";
-  cin >> temp_num;
+  // create an unique 5 digit account number call it temp_num
+  // check to see if unique 5 digit account number is in the bank account file
+
+  temp_num = (rand() % 99999);
+  accountNumber = to_string(temp_num);
+  for(int i = accountNumber.length(); i < 5; i++){
+    accountNumber = "0" + accountNumber;
+  }
+
+  while(check){
+    if(checkAccountNumber(accountNumber)){
+
+      for(int i = accountNumber.length(); i < 5; i++){
+        accountNumber = "0" + accountNumber;
+      }
+      check = true;
+    }
+    temp_num = (rand() % 99999);
+    accountNumber = to_string(temp_num);
+    check = false;
+  }
 
   cout << "enter balance: \n";
   cin >> balance;
@@ -699,10 +750,9 @@ bool Transaction::create(){
     temp_name += ' ';
   }
 
-  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(temp_num)+string("_")+string(balance)+"_"+string("\n");
+  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(accountNumber)+string("_")+string(balance)+"_"+string("\n");
 
   return true;
-
 }
 /*
 Delete transaction, validates session type and writes to transaction file

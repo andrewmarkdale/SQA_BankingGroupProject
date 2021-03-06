@@ -87,5 +87,6 @@ class Transaction {
   bool create();
   void startCurrentTransaction();
   bool cancelCheck(string &input);
+  bool checkAccountNumber(string temp_num);
 };
 #endif
