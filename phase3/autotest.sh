@@ -19,6 +19,7 @@ for i in "${transactions[@]}"
         #Running test file to generate actual session transaction file and actual terminal output
         for FILE in *.inp; do echo "Running test $FILE";
             #Starting the bank terminal and generating our output files
+            #../.././main ../../CurrentBankAccounts.txt output/${FILE%.*}.atf < $FILE > output/${FILE%.*}.out
             ../.././main ../../CurrentBankAccounts.txt output/${FILE%.*}.atf < $FILE > output/${FILE%.*}.out
         done
 
