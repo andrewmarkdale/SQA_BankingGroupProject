@@ -620,6 +620,7 @@ bool Transaction::disable(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;

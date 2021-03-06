@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author: Jevon Rambarran & Andrew Dale 
+# Author: Jevon Rambarran & Andrew Dale
 # Objective: Scripts for passing in test file into bank terminal
 
 cd BankTesting
@@ -10,7 +10,7 @@ cd BankTesting
 #                       "withdrawal" "changeplan" "create" "delete"
 #                        "deposit" "disable")
 
-declare -a transactions=("login" "logout" "transfer" "withdrawal")
+declare -a transactions=("create")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
@@ -19,6 +19,7 @@ for i in "${transactions[@]}"
         #Running test file to generate actual session transaction file and actual terminal output
         for FILE in *.inp; do echo "Running test $FILE";
             #Starting the bank terminal and generating our output files
+            #../.././main ../../CurrentBankAccounts.txt output/${FILE%.*}.atf < $FILE > output/${FILE%.*}.out
             ../.././main ../../CurrentBankAccounts.txt output/${FILE%.*}.atf < $FILE > output/${FILE%.*}.out
         done
 
