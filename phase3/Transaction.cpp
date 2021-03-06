@@ -3,6 +3,7 @@
 #include <string>
 #include <stdlib.h>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 /*
@@ -19,6 +20,13 @@ void Transaction::getTransaction(){
   cin >> currentTransaction;
   validateTransaction();
 };
+
+bool Transaction::cancelCheck(string &input){
+  if(input == "cancel"){
+    cout << "transaction cancelled\n";
+    return true;
+  }
+}
 
 /*
   validateTransaction will validate if the transaction currently
@@ -48,7 +56,7 @@ bool Transaction::validateTransaction(){
 /*
 
 validatePlan takes input and will validate whether or not the input from the
-user matches the allowed plans in the validPlans list. List can be quickly 
+user matches the allowed plans in the validPlans list. List can be quickly
 altered to allow new plans to be added.
 
 if valid plan type is entered
@@ -67,6 +75,7 @@ invalid input and return to getTransaction.
 bool Transaction::validatePlan(){
   cout << "enter account type (SP - student, NP - standard):\n";
   cin >> planType;
+  if(cancelCheck(planType)){return false;};
   for(int i = 0; i < 2; i++){
     if(planType == validPlans[i]){
       return true;
@@ -75,7 +84,7 @@ bool Transaction::validatePlan(){
   cout << "unknown plan\n";
   validatePlan();
   return false;
-}
+};
 /*
 
 validatePlan takes input and will validate whether or not the input from the
@@ -98,6 +107,7 @@ return false
 bool Transaction::validatePayee(){
   cout << "enter the payee:\n";
   cin >> currentPayee;
+  if(cancelCheck(currentPayee)){return false;};
   for(int i = 0; i < 3; i++){
     if(currentPayee == validPayees[i]){
       return true;
@@ -105,7 +115,7 @@ bool Transaction::validatePayee(){
   }
   cout << "invalid input\n";
   return false;
-}
+};
 
 /*
   validateAccountHolder will validate if an account holder name is in the
@@ -194,7 +204,7 @@ bool Transaction::validateAccountNumber(){
   cout << "account number not found\n";
   return false;
   reader.close();
-};
+}
 
 
 /*
@@ -224,7 +234,36 @@ void Transaction::startCurrentTransaction(){
   }else if(currentTransaction == validTransactions[8]){
     changeplan();
   }
-}
+};
+
+bool Transaction::checkAccountNumber(string temp_num){
+  string line;
+  ifstream reader(currentBankAccountFile);
+  while (getline (reader, line)) {
+    string word[4];
+    int counter = 0;
+    for(int i = 0; i < line.length(); i++){
+      if(line[i] == '_'){
+        counter++;
+      }else if(line[i] == ' '){
+
+      }
+      else{
+        word[counter] += line[i];
+      }
+    }
+
+    if(word[0] != temp_num){
+      return true;
+    }
+    else{
+      cout << "account number already created\n";
+      return false;
+    }
+  }
+
+  reader.close();
+};
 /***************************************************************************************************
 tranfer transaction, validates account number (from), validates account number (to) and writes to
 transaction file once user has entered transfer amount
@@ -259,6 +298,7 @@ bool Transaction::transfer(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -267,12 +307,15 @@ bool Transaction::transfer(){
   string transferamount;
   cout << "enter account number(from):\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout <<"enter account number (to):\n";
     cin >> accountNumberTo;
+    if(cancelCheck(accountNumberTo)){return false;};
     if(validateAccountNumber()){
       cout <<"enter transfer amount:\n";
       cin >> transferamount;
+      if(cancelCheck(transferamount)){return false;};
       if(::atof(transferamount.c_str()) > 1000 && sessiontype == "standard"){
         cout << "limit for standard transfer is 1000\n";
         accountNumberTo ="";
@@ -339,6 +382,7 @@ bool Transaction::changeplan(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -346,6 +390,7 @@ bool Transaction::changeplan(){
 
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     if(validatePlan()){
       string tempname = accountHolderName;
@@ -395,6 +440,7 @@ bool Transaction::deposit(){
     if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -403,9 +449,11 @@ bool Transaction::deposit(){
   string depositAmount;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter deposit amount\n";
     cin >> depositAmount;
+    if(cancelCheck(depositAmount)){return false;};
     cout << "deposit successful\n";
 
     string tempname = accountHolderName;
@@ -448,6 +496,7 @@ bool Transaction::paybill(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -457,10 +506,12 @@ bool Transaction::paybill(){
   string paymentAmount;
   cout << "enter the account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     if(validatePayee()){
       cout << "enter the amount:\n";
       cin >> paymentAmount;
+      if(cancelCheck(paymentAmount)){return false;};
       cout << "payment successful\n";
 
       string tempname = accountHolderName;
@@ -504,6 +555,7 @@ bool Transaction::withdrawal(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -513,9 +565,11 @@ bool Transaction::withdrawal(){
   string withdrawalamount;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter withdrawal amount\n";
     cin >> withdrawalamount;
+    if(cancelCheck(withdrawalamount)){return false;};
     cout << "withdrawal successful\n";
 
     string tempname = accountHolderName;
@@ -590,6 +644,7 @@ bool Transaction::disable(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -598,9 +653,11 @@ bool Transaction::disable(){
   string d;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter lowercase d to disable\n";
     cin >> d;
+    if(cancelCheck(d)){return false;};
       if(d == "d"){
         cout << "disable successful\n";
 
@@ -656,14 +713,35 @@ bool Transaction::create(){
     return false;
   }
   string temp_name;
-  string temp_num;
+  int temp_num;
+  string accountNumber;
   string balance;
+  bool check = false;
 
-  cout << "enter account name\n";
+  cout << "enter account name: \n";
   cin >> temp_name;
 
-  cout  << "enter account number\n";
-  cin >> temp_num;
+  // create an unique 5 digit account number call it temp_num
+  // check to see if unique 5 digit account number is in the bank account file
+
+  temp_num = (rand() % 99999);
+  accountNumber = to_string(temp_num);
+  for(int i = accountNumber.length(); i < 5; i++){
+    accountNumber = "0" + accountNumber;
+  }
+
+  while(check){
+    if(checkAccountNumber(accountNumber)){
+
+      for(int i = accountNumber.length(); i < 5; i++){
+        accountNumber = "0" + accountNumber;
+      }
+      check = true;
+    }
+    temp_num = (rand() % 99999);
+    accountNumber = to_string(temp_num);
+    check = false;
+  }
 
   cout << "enter balance: \n";
   cin >> balance;
@@ -672,10 +750,9 @@ bool Transaction::create(){
     temp_name += ' ';
   }
 
-  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(temp_num)+string("_")+string(balance)+"_"+string("\n");
+  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(accountNumber)+string("_")+string(balance)+"_"+string("\n");
 
   return true;
-
 }
 /*
 Delete transaction, validates session type and writes to transaction file
@@ -703,6 +780,7 @@ bool Transaction::Delete(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -710,6 +788,7 @@ bool Transaction::Delete(){
 
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
 
     string tempname = accountHolderName;
