@@ -6,10 +6,11 @@
 cd BankTesting
 
 # Create array of transactions
-declare -a transactions=("login" "logout" "paybill" "transfer"
-                        "withdrawal" "changeplan" "create" "delete"
-                        "deposit" "disable")
+#declare -a transactions=("login" "logout" "paybill" "transfer"
+#                       "withdrawal" "changeplan" "create" "delete"
+#                        "deposit" "disable")
 
+declare -a transactions=("login" "logout" "transfer" "withdrawal")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do

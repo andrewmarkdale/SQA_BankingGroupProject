@@ -20,20 +20,23 @@ int main(int argc, char** argv)
     exit(0);
   }
 
-    cout << "welcome to the banking system\n";
-    Session newSession(argv[1], argv[2]);
-    newSession.login();
-    if(newSession.accountHolderExist || newSession.sessionType == "admin"){
-      cout << "login accepted\n";
-      Transaction newTransaction(newSession);
-      newTransaction.getTransaction();
-      while(newTransaction.currentTransaction != "logout"){
-              newTransaction.startCurrentTransaction();
-              newTransaction.getTransaction();
+  bool liveSession = true;
+  
+  do{
+      cout << "welcome to the banking system\n";
+      Session newSession(argv[1], argv[2]);
+      newSession.login();
+      if(newSession.accountHolderExist || newSession.sessionType == "admin"){
+        cout << "login accepted\n";
+        Transaction newTransaction(newSession);
+        newTransaction.getTransaction();
+        while(newTransaction.currentTransaction != "logout"){
+                newTransaction.startCurrentTransaction();
+                newTransaction.getTransaction();
+        }
+        newTransaction.logout();
+        liveSession = false;
       }
-      newTransaction.logout();
-    }else{
-      exit(0);
-    }
-    return 0;
+  }while(liveSession);
+  return 0;
 }

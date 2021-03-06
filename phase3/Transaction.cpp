@@ -551,7 +551,7 @@ bool Transaction::logout(){
   appendTosessionTransactionFile += string("00_")+tempname+string("_00000_")+string("00000.00_");
   writeTransactionFile << appendTosessionTransactionFile <<endl;
   writeTransactionFile.close();
-  cout << "session terminated\n";
+  cout << "session terminated";
   return true;
 };
 
