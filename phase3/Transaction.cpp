@@ -20,6 +20,13 @@ void Transaction::getTransaction(){
   validateTransaction();
 };
 
+bool Transaction::cancelCheck(string &input){
+  if(input == "cancel"){
+    cout << "transaction cancelled\n";
+    return true;
+  }
+}
+
 /*
   validateTransaction will validate if the transaction currently
   entered by user is valid.
@@ -48,7 +55,7 @@ bool Transaction::validateTransaction(){
 /*
 
 validatePlan takes input and will validate whether or not the input from the
-user matches the allowed plans in the validPlans list. List can be quickly 
+user matches the allowed plans in the validPlans list. List can be quickly
 altered to allow new plans to be added.
 
 if valid plan type is entered
@@ -67,6 +74,7 @@ invalid input and return to getTransaction.
 bool Transaction::validatePlan(){
   cout << "enter account type (SP - student, NP - standard):\n";
   cin >> planType;
+  if(cancelCheck(planType)){return false;};
   for(int i = 0; i < 2; i++){
     if(planType == validPlans[i]){
       return true;
@@ -98,6 +106,7 @@ return false
 bool Transaction::validatePayee(){
   cout << "enter the payee:\n";
   cin >> currentPayee;
+  if(cancelCheck(currentPayee)){return false;};
   for(int i = 0; i < 3; i++){
     if(currentPayee == validPayees[i]){
       return true;
@@ -259,6 +268,7 @@ bool Transaction::transfer(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -267,12 +277,15 @@ bool Transaction::transfer(){
   string transferamount;
   cout << "enter account number(from):\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout <<"enter account number (to):\n";
     cin >> accountNumberTo;
+    if(cancelCheck(accountNumberTo)){return false;};
     if(validateAccountNumber()){
       cout <<"enter transfer amount:\n";
       cin >> transferamount;
+      if(cancelCheck(transferamount)){return false;};
       if(::atof(transferamount.c_str()) > 1000 && sessiontype == "standard"){
         cout << "limit for standard transfer is 1000\n";
         accountNumberTo ="";
@@ -339,6 +352,7 @@ bool Transaction::changeplan(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -346,6 +360,7 @@ bool Transaction::changeplan(){
 
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     if(validatePlan()){
       string tempname = accountHolderName;
@@ -395,6 +410,7 @@ bool Transaction::deposit(){
     if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -403,9 +419,11 @@ bool Transaction::deposit(){
   string depositAmount;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter deposit amount\n";
     cin >> depositAmount;
+    if(cancelCheck(depositAmount)){return false;};
     cout << "deposit successful\n";
 
     string tempname = accountHolderName;
@@ -448,6 +466,7 @@ bool Transaction::paybill(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -457,10 +476,12 @@ bool Transaction::paybill(){
   string paymentAmount;
   cout << "enter the account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     if(validatePayee()){
       cout << "enter the amount:\n";
       cin >> paymentAmount;
+      if(cancelCheck(paymentAmount)){return false;};
       cout << "payment successful\n";
 
       string tempname = accountHolderName;
@@ -504,6 +525,7 @@ bool Transaction::withdrawal(){
   if(sessiontype == "admin"){
     cout << "enter account holder name:\n";
     cin >> accountHolderName;
+    if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
       accountHolderName = "";
       return false;
@@ -513,9 +535,11 @@ bool Transaction::withdrawal(){
   string withdrawalamount;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter withdrawal amount\n";
     cin >> withdrawalamount;
+    if(cancelCheck(withdrawalamount)){return false;};
     cout << "withdrawal successful\n";
 
     string tempname = accountHolderName;
@@ -590,6 +614,7 @@ bool Transaction::disable(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -598,9 +623,11 @@ bool Transaction::disable(){
   string d;
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
     cout << "enter lowercase d to disable\n";
     cin >> d;
+    if(cancelCheck(d)){return false;};
       if(d == "d"){
         cout << "disable successful\n";
 
@@ -703,6 +730,7 @@ bool Transaction::Delete(){
 
   cout << "enter account holder name:\n";
   cin >> accountHolderName;
+  if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
     accountHolderName = "";
     return false;
@@ -710,6 +738,7 @@ bool Transaction::Delete(){
 
   cout << "enter account number\n";
   cin >> accountNumber;
+  if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
 
     string tempname = accountHolderName;

@@ -25,7 +25,7 @@ delete
 create
 changeplan
 
-Handles all transactions. 
+Handles all transactions.
 
 */
 
@@ -86,5 +86,6 @@ class Transaction {
   bool Delete();
   bool create();
   void startCurrentTransaction();
+  bool cancelCheck(string &input);
 };
 #endif

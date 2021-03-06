@@ -21,7 +21,7 @@ int main(int argc, char** argv)
   }
 
   bool liveSession = true;
-  
+
   do{
       cout << "welcome to the banking system\n";
       Session newSession(argv[1], argv[2]);
