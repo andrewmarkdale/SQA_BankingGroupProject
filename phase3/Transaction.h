@@ -29,8 +29,6 @@ Handles all transactions.
 
 */
 
-
-
 class Transaction {
   public:
   string currentTransaction;
@@ -45,6 +43,8 @@ class Transaction {
   string accountNumberTo;
   string accountHolderNameTo;
   string sessiontype;
+  string currentBankAccountFile;
+  string sessionTransactionFile;
   string appendTosessionTransactionFile;
   Transaction(Session currentsession){
     validTransactions[0] = "logout";
@@ -62,6 +62,8 @@ class Transaction {
     validPlans[0] = "NP";
     validPlans[1] = "SP";
     sessiontype = currentsession.sessionType;
+    currentBankAccountFile = currentsession.currentBankAccountFile;
+    sessionTransactionFile = currentsession.sessionTransactionFile;
     if(currentsession.sessionType == "standard"){
       accountHolderName = currentsession.accountHolderName;
     }else{

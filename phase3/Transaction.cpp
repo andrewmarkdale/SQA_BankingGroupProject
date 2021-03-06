@@ -15,7 +15,7 @@ using namespace std;
   return type none
 */
 void Transaction::getTransaction(){
-  cout << "enter transaction type\n";
+  cout << "enter transaction type:\n";
   cin >> currentTransaction;
   validateTransaction();
 };
@@ -124,7 +124,7 @@ bool Transaction::validatePayee(){
 
 bool Transaction::validateAccountHolder() {
   string line;
-  ifstream reader("CurrentBankAccounts.txt");
+  ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
     int counter = 0;
@@ -169,7 +169,7 @@ bool Transaction::validateAccountHolder() {
 */
 bool Transaction::validateAccountNumber(){
   string line;
-  ifstream reader("CurrentBankAccounts.txt");
+  ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
     int counter = 0;
@@ -541,7 +541,7 @@ closes transaction file
 returns true
 */
 bool Transaction::logout(){
-  ofstream writeTransactionFile("sessiontransactions.txt");
+  ofstream writeTransactionFile(sessionTransactionFile);
   // This tempname isn't strictly necessary but I figured for consistency
   // may as well add it.
   string tempname = accountHolderName;
@@ -551,6 +551,7 @@ bool Transaction::logout(){
   appendTosessionTransactionFile += string("00_")+tempname+string("_00000_")+string("00000.00_");
   writeTransactionFile << appendTosessionTransactionFile <<endl;
   writeTransactionFile.close();
+  cout << "session terminated\n";
   return true;
 };
 

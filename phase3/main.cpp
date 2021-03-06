@@ -15,15 +15,16 @@ using namespace std;
 //Output: bankAccountTransaction file
 int main(int argc, char** argv)
 {
-  // if(argc != 3){
-  //   cout << "Usage: ./main currentbankaccountfile outputfile\n";
-  //   exit(0);
-  // }
+  if(argc != 3){
+    cout << "Usage: ./main CurrentBankAccounts.txt SessionTransaction.atf\n";
+    exit(0);
+  }
 
     cout << "welcome to the banking system\n";
-    Session newSession;
+    Session newSession(argv[1], argv[2]);
     newSession.login();
     if(newSession.accountHolderExist || newSession.sessionType == "admin"){
+      cout << "login accepted\n";
       Transaction newTransaction(newSession);
       newTransaction.getTransaction();
       while(newTransaction.currentTransaction != "logout"){

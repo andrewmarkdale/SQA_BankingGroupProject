@@ -21,6 +21,14 @@ class Session {
     string sessionType;
     string transaction;
     string accountHolderName;
+    string currentBankAccountFile;
+    string sessionTransactionFile;
+
+    Session(string CBAF, string STF){
+      currentBankAccountFile = CBAF;
+      sessionTransactionFile = STF;
+    };
+
     bool accountHolderExist;
     void login();
     void getsessionType();

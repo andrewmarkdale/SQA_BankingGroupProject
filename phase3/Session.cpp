@@ -45,7 +45,7 @@ void Session::getsessionType() {
   cout << "enter session type:\n";
   cin >> sessionType;
   if(sessionType == "standard"){
-    cout << "enter account holder name\n";
+    cout << "enter account holder name:\n";
     cin >> accountHolderName;
     accountHolderExist = validateAccountHolder();
   }else if (sessionType == "admin"){
@@ -73,7 +73,7 @@ void Session::getsessionType() {
 */
 bool Session::validateAccountHolder() {
   string line;
-  ifstream reader("CurrentBankAccounts.txt");
+  ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
     int counter = 0;
