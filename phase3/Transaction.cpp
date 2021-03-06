@@ -548,8 +548,8 @@ bool Transaction::logout(){
   for(int i = accountHolderName.length(); i < 20; i++){
     tempname += ' ';
   }
-  appendTosessionTransactionFile += string("00_")+tempname+string("_00000_")+string("00000.00_");
-  writeTransactionFile << appendTosessionTransactionFile <<endl;
+  appendTosessionTransactionFile += string("00 ")+tempname+string(" 00000 ")+string("00000000   ");
+  writeTransactionFile << appendTosessionTransactionFile;
   writeTransactionFile.close();
   cout << "session terminated";
   return true;

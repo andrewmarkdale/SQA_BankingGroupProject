@@ -1,7 +1,10 @@
 welcome to the banking system
 enter session type:
+enter account holder name:
 login accepted
 enter transaction type:
-invalid input
+enter account number
+enter withdrawal amount
+withdrawal successful
 enter transaction type:
 session terminated
