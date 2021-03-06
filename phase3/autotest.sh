@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author: Jevon Rambarran & Andrew Dale 
+# Author: Jevon Rambarran & Andrew Dale
 # Objective: Scripts for passing in test file into bank terminal
 
 cd BankTesting
@@ -10,7 +10,7 @@ cd BankTesting
 #                       "withdrawal" "changeplan" "create" "delete"
 #                        "deposit" "disable")
 
-declare -a transactions=("login")
+declare -a transactions=("deposit")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do

@@ -447,11 +447,11 @@ bool Transaction::deposit(){
     }
   }
   string depositAmount;
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
-    cout << "enter deposit amount\n";
+    cout << "enter deposit amount:\n";
     cin >> depositAmount;
     if(cancelCheck(depositAmount)){return false;};
     cout << "deposit successful\n";
