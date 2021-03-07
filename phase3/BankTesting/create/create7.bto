@@ -2,8 +2,7 @@ welcome to the banking system
 enter session type:
 login accepted
 enter transaction type:
-create account specified
 enter account name:
-enter initial amount:
-new account created
+enter balance:
+enter transaction type:
 session terminated

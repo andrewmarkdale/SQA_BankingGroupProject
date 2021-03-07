@@ -202,8 +202,9 @@ bool Transaction::validateAccountNumber(){
     }
   }
   cout << "account number not found\n";
-  return false;
+
   reader.close();
+  return false;
 }
 
 
@@ -258,11 +259,11 @@ bool Transaction::checkAccountNumber(string temp_num){
     }
     else{
       cout << "account number already created\n";
-      return false;
     }
   }
 
   reader.close();
+  return false;
 };
 /***************************************************************************************************
 tranfer transaction, validates account number (from), validates account number (to) and writes to
@@ -718,8 +719,13 @@ bool Transaction::create(){
   string balance;
   bool check = false;
 
-  cout << "enter account name: \n";
+  cout << "enter account name:\n";
   cin >> temp_name;
+  if(cancelCheck(temp_name)){return false;};
+  if(temp_name.length() > 20){
+    cout << "invalid account length\n";
+    return false;
+  };
 
   // create an unique 5 digit account number call it temp_num
   // check to see if unique 5 digit account number is in the bank account file
@@ -729,7 +735,6 @@ bool Transaction::create(){
   for(int i = accountNumber.length(); i < 5; i++){
     accountNumber = "0" + accountNumber;
   }
-
   while(check){
     if(checkAccountNumber(accountNumber)){
 
@@ -743,8 +748,13 @@ bool Transaction::create(){
     check = false;
   }
 
-  cout << "enter balance: \n";
+  cout << "enter balance:\n";
   cin >> balance;
+  if(cancelCheck(balance)){return false;};
+  if(balance.length()>8){
+    cout << "invalid amount\n";
+    return false;
+  }
 
   for(int i = temp_name.length(); i < 20; i++){
     temp_name += ' ';
