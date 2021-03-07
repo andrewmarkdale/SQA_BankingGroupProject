@@ -20,7 +20,6 @@ void Session::login() {
       getsessionType();
   }else{
       cout << "invalid input\n";
-      exit(0);
   }
 };
 

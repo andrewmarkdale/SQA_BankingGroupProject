@@ -448,11 +448,11 @@ bool Transaction::deposit(){
     }
   }
   string depositAmount;
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
-    cout << "enter deposit amount\n";
+    cout << "enter deposit amount:\n";
     cin >> depositAmount;
     if(cancelCheck(depositAmount)){return false;};
     cout << "deposit successful\n";
@@ -603,8 +603,8 @@ bool Transaction::logout(){
   for(int i = accountHolderName.length(); i < 20; i++){
     tempname += ' ';
   }
-  appendTosessionTransactionFile += string("00_")+tempname+string("_00000_")+string("00000.00_");
-  writeTransactionFile << appendTosessionTransactionFile <<endl;
+  appendTosessionTransactionFile += string("00 ")+tempname+string(" 00000 ")+string("00000000   ");
+  writeTransactionFile << appendTosessionTransactionFile;
   writeTransactionFile.close();
   cout << "session terminated";
   return true;
