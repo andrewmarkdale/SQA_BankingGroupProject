@@ -144,12 +144,13 @@ bool Transaction::validatePayee(){
 bool Transaction::validateAccountHolder() {
   string line;
   string checkname;
+  string balance;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
     string checkname;
     int counter = 0;
-    for(int i = 6; i < 25; i++){
+    for(int i = 6; i < 26; i++){
     //  if(line[i] == '_'){
     //    counter++;
     //  }else if(line[i] == ' '){
@@ -162,13 +163,16 @@ bool Transaction::validateAccountHolder() {
       checkname += line[i];
     }
     }
+    for(int i = 29; i<37;i++){
+      balance += line[i];
+    }
 
     if(checkname == accountHolderName){
       reader.close();
+      accountHolderBalance = balance;
       return true;
     }
   }
-  cout << checkname;
   cout << "account not found\n";
   reader.close();
   return false;

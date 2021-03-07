@@ -42,6 +42,7 @@ class Transaction {
   string accountNumber;
   string accountNumberTo;
   string accountHolderNameTo;
+  string accountHolderBalance;
   string sessiontype;
   string currentBankAccountFile;
   string sessionTransactionFile;
