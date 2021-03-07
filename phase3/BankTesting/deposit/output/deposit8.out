@@ -5,11 +5,11 @@ login accepted
 enter transaction type:
 enter account number:
 enter deposit amount:
-invalid input
+deposit successful
 enter transaction type:
-enter the account number
+enter account number:
 enter the payee:
 enter the amount:
-payment successful
+invalid input
 enter transaction type:
 session terminated

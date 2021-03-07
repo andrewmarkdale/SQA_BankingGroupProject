@@ -3,9 +3,9 @@ enter session type:
 login accepted
 enter transaction type:
 enter account holder name:
-enter the account number
+enter account number:
 enter the payee:
 enter the amount:
-payment successful
+invalid input
 enter transaction type:
 session terminated

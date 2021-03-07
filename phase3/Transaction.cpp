@@ -507,7 +507,7 @@ bool Transaction::deposit(){
     for(int i = accountHolderName.length(); i<20; i++){
       tempname += ' ';
     }
-    appendTosessionTransactionFile += "04_"+tempname+"_"+accountNumber+"_"+depositAmount+"_\n";
+    appendTosessionTransactionFile += "04 "+tempname+" "+accountNumber+" "+depositAmount+"   \n";
 
     if(sessiontype == "admin"){accountHolderName = "";}
     return true;
@@ -551,7 +551,7 @@ bool Transaction::paybill(){
   }
 
   string paymentAmount;
-  cout << "enter the account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
@@ -559,13 +559,15 @@ bool Transaction::paybill(){
       cout << "enter the amount:\n";
       cin >> paymentAmount;
       if(cancelCheck(paymentAmount)){return false;};
+      if(stoi(paymentAmount) > stoi(accountHolderBalance)){cout << "invalid input\n";return false;};
+      if(stoi(paymentAmount) > 2000 && sessiontype == "standard"){cout << "invalid input\n";return false;};
       cout << "payment successful\n";
 
       string tempname = accountHolderName;
       for(int i = accountHolderName.length(); i<20;i++){
         tempname += ' ';
       }
-      appendTosessionTransactionFile += "03_"+tempname+"_"+accountNumber+"_"+paymentAmount+"_\n";
+      appendTosessionTransactionFile += "03 "+tempname+" "+accountNumber+" "+paymentAmount+"   \n";
       if(sessiontype == "admin"){accountHolderName = "";}
       return true;
     }
@@ -646,6 +648,7 @@ bool Transaction::logout(){
   ofstream writeTransactionFile(sessionTransactionFile);
   // This tempname isn't strictly necessary but I figured for consistency
   // may as well add it.
+  if(sessiontype == "admin"){accountHolderName = "";};
   string tempname = accountHolderName;
   for(int i = accountHolderName.length(); i < 20; i++){
     tempname += ' ';
