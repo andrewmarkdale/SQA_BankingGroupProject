@@ -4,8 +4,16 @@
 #include <stdlib.h>
 #include <fstream>
 #include <cstdlib>
-
+#include <algorithm>
 using namespace std;
+/*
+is_number checks if input string is in fact a number -- if not
+it returns false.
+*/
+bool is_number(const string& s){
+    return !s.empty() && std::find_if(s.begin(),
+        s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+}
 /*
   getTransaction will read in the transaction type as std input and
   save it to the currentTransaction variable and then validate the transaction
@@ -15,6 +23,7 @@ using namespace std;
 
   return type none
 */
+
 void Transaction::getTransaction(){
   cout << "enter transaction type:\n";
   cin >> currentTransaction;
@@ -455,6 +464,8 @@ bool Transaction::deposit(){
     cout << "enter deposit amount:\n";
     cin >> depositAmount;
     if(cancelCheck(depositAmount)){return false;};
+    if(!is_number(depositAmount)){return false;}
+    if(stoi(depositAmount) > 100000){return false;}
     cout << "deposit successful\n";
 
     string tempname = accountHolderName;
