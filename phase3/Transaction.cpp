@@ -575,11 +575,11 @@ bool Transaction::withdrawal(){
   }
 
   string withdrawalamount;
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
-    cout << "enter withdrawal amount\n";
+    cout << "enter withdrawal amount:\n";
     cin >> withdrawalamount;
     if(cancelCheck(withdrawalamount)){return false;};
     cout << "withdrawal successful\n";
