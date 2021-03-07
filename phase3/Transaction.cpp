@@ -148,7 +148,8 @@ bool Transaction::validateAccountHolder() {
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
-    string checkname;
+    checkname = "";
+    balance = "";
     int counter = 0;
     for(int i = 6; i < 26; i++){
     //  if(line[i] == '_'){
@@ -201,10 +202,12 @@ bool Transaction::validateAccountNumber(){
   string line;
   string accountNumber;
   string accountName;
+  string balance;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     accountNumber = "";
     accountName = "";
+    balance = "";
     string word[4];
     int counter = 0;
     for(int i = 0; i < 5; i++){
@@ -225,6 +228,9 @@ bool Transaction::validateAccountNumber(){
         accountName += line[i];
       }
     }
+    for(int i = 29; i<37;i++){
+      balance += line[i];
+    }
     word[0] = accountNumber;
     word[1] = accountName;
     if(currentTransaction == "transfer" && accountNumberTo == word[0]){
@@ -232,6 +238,7 @@ bool Transaction::validateAccountNumber(){
       return true;
     }
     if(word[1] == accountHolderName && word[0] == accountNumber && accountNumberTo ==""){
+      accountHolderBalance = balance;
       return true;
     }
   }
@@ -493,7 +500,7 @@ bool Transaction::deposit(){
     if(cancelCheck(depositAmount)){return false;};
     if(!is_number(depositAmount)){cout << "invalid input\n";return false;}
     if(stoi(depositAmount) > 100000){cout << "invalid input\n"; return false;}
-    if(stoi(depositAmount) + accountHolderBalance > 99999){cout << "invalid input\n"; return false;}
+    if(stoll(depositAmount) + stoll(accountHolderBalance) > 99999){cout << "invalid input\n"; return false;}
     cout << "deposit successful\n";
 
     string tempname = accountHolderName;
@@ -610,6 +617,7 @@ bool Transaction::withdrawal(){
     cout << "enter withdrawal amount:\n";
     cin >> withdrawalamount;
     if(cancelCheck(withdrawalamount)){return false;};
+    if(stoi(withdrawalamount) > stoi(accountHolderBalance)){cout << "invalid input\n";return false;}
     cout << "withdrawal successful\n";
 
     string tempname = accountHolderName;
