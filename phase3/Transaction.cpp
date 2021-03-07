@@ -464,8 +464,8 @@ bool Transaction::deposit(){
     cout << "enter deposit amount:\n";
     cin >> depositAmount;
     if(cancelCheck(depositAmount)){return false;};
-    if(!is_number(depositAmount)){return false;}
-    if(stoi(depositAmount) > 100000){return false;}
+    if(!is_number(depositAmount)){cout << "invalid input\n";return false;}
+    if(stoi(depositAmount) > 100000){cout << "invalid input\n"; return false;}
     cout << "deposit successful\n";
 
     string tempname = accountHolderName;
