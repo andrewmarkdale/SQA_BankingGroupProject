@@ -90,8 +90,8 @@ bool Transaction::validatePlan(){
       return true;
     }
   }
-  cout << "unknown plan\n";
-  validatePlan();
+  cout << "invalid input\n";
+  
   return false;
 };
 /*
@@ -200,12 +200,12 @@ bool Transaction::validateAccountHolder() {
 */
 bool Transaction::validateAccountNumber(){
   string line;
-  string accountNumber;
+  string accountNumberRead;
   string accountName;
   string balance;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
-    accountNumber = "";
+    accountNumberRead = "";
     accountName = "";
     balance = "";
     string word[4];
@@ -219,9 +219,9 @@ bool Transaction::validateAccountNumber(){
       //else{
       //  word[counter] += line[i];
       //}
-      if(line[i] != ' '){
-        accountNumber += line[i];
-      }
+      
+      accountNumberRead += line[i];
+      
     }
     for(int i = 6; i < 25; i++){
       if(line[i] != ' '){
@@ -231,19 +231,16 @@ bool Transaction::validateAccountNumber(){
     for(int i = 29; i<37;i++){
       balance += line[i];
     }
-    word[0] = accountNumber;
-    word[1] = accountName;
     if(currentTransaction == "transfer" && accountNumberTo == word[0]){
       accountHolderNameTo = word[1];
       return true;
     }
-    if(word[1] == accountHolderName && word[0] == accountNumber && accountNumberTo ==""){
+    if(accountName == accountHolderName && accountNumberRead == accountNumber && accountNumberTo ==""){
       accountHolderBalance = balance;
       return true;
     }
   }
-  cout << accountNumber;
-  cout << accountName;
+
   cout << "account number not found\n";
 
   reader.close();
@@ -432,7 +429,7 @@ bool Transaction::changeplan(){
     return false;
   }
 
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
@@ -443,13 +440,13 @@ bool Transaction::changeplan(){
       }
       if(planType == "NP"){
         cout << "account updated to non-student\n";
-        appendTosessionTransactionFile += "08_"+tempname+"_"+accountNumber+"_00000.00_\n";
+        appendTosessionTransactionFile += "08 "+tempname+" "+accountNumber+" 00000000 NP\n";
         accountHolderName = "";
         return true;
       }
       else if(planType == "SP"){
         cout << "account updated to student\n";
-        appendTosessionTransactionFile += "08_"+tempname+"_"+accountNumber+"_00000.00_\n";
+        appendTosessionTransactionFile += "08 "+tempname+" "+accountNumber+" 00000000 SP\n";
         accountHolderName = "";
         return true;
       }

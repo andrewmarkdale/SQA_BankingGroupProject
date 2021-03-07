@@ -3,8 +3,7 @@ enter session type:
 login accepted
 enter transaction type:
 enter account holder name:
-account not found
-enter transaction type:
-invalid input
+enter account number:
+account number not found
 enter transaction type:
 session terminated

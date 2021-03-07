@@ -3,8 +3,8 @@ enter session type:
 login accepted
 enter transaction type:
 enter account holder name:
-account not found
-enter transaction type:
-invalid input
+enter account number:
+enter account type (SP - student, NP - standard):
+transaction cancelled
 enter transaction type:
 session terminated

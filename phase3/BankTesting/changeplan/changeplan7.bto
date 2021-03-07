@@ -2,8 +2,7 @@ welcome to the banking system
 enter session type:
 login accepted
 enter transaction type:
-enter account name:
-account name not found
-transaction cancelled
+enter account holder name:
+account not found
 enter transaction type:
 session terminated
