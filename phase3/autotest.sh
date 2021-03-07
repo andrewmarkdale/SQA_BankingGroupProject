@@ -10,7 +10,7 @@ cd BankTesting
 #                       "withdrawal" "changeplan" "create" "delete"
 #                        "deposit" "disable")
 
-declare -a transactions=("deposit")
+declare -a transactions=("create")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
