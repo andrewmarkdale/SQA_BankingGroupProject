@@ -143,25 +143,32 @@ bool Transaction::validatePayee(){
 
 bool Transaction::validateAccountHolder() {
   string line;
+  string checkname;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     string word[4];
+    string checkname;
     int counter = 0;
-    for(int i = 0; i < line.length(); i++){
-      if(line[i] == '_'){
-        counter++;
-      }else if(line[i] == ' '){
-
-      }
-      else{
-        word[counter] += line[i];
-      }
+    for(int i = 6; i < 25; i++){
+    //  if(line[i] == '_'){
+    //    counter++;
+    //  }else if(line[i] == ' '){
+    //    counter++;
+    //  }
+    //  else{
+    //    word[counter] += line[i];
+    //  }
+    if(line[i] != ' '){
+      checkname += line[i];
     }
-    if(word[1] == accountHolderName){
+    }
+
+    if(checkname == accountHolderName){
       reader.close();
       return true;
     }
   }
+  cout << checkname;
   cout << "account not found\n";
   reader.close();
   return false;
@@ -188,20 +195,34 @@ bool Transaction::validateAccountHolder() {
 */
 bool Transaction::validateAccountNumber(){
   string line;
+  string accountNumber;
+  string accountName;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
+    accountNumber = "";
+    accountName = "";
     string word[4];
     int counter = 0;
-    for(int i = 0; i < line.length(); i++){
-      if(line[i] == '_'){
-        counter++;
-      }else if(line[i] == ' '){
+    for(int i = 0; i < 5; i++){
+      //if(line[i] == '_'){
+      //  counter++;
+      //}else if(line[i] == ' '){
 
-      }
-      else{
-        word[counter] += line[i];
+      //}
+      //else{
+      //  word[counter] += line[i];
+      //}
+      if(line[i] != ' '){
+        accountNumber += line[i];
       }
     }
+    for(int i = 6; i < 25; i++){
+      if(line[i] != ' '){
+        accountName += line[i];
+      }
+    }
+    word[0] = accountNumber;
+    word[1] = accountName;
     if(currentTransaction == "transfer" && accountNumberTo == word[0]){
       accountHolderNameTo = word[1];
       return true;
@@ -210,6 +231,8 @@ bool Transaction::validateAccountNumber(){
       return true;
     }
   }
+  cout << accountNumber;
+  cout << accountName;
   cout << "account number not found\n";
 
   reader.close();
@@ -575,11 +598,11 @@ bool Transaction::withdrawal(){
   }
 
   string withdrawalamount;
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
-    cout << "enter withdrawal amount\n";
+    cout << "enter withdrawal amount:\n";
     cin >> withdrawalamount;
     if(cancelCheck(withdrawalamount)){return false;};
     cout << "withdrawal successful\n";

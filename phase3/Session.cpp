@@ -72,21 +72,27 @@ void Session::getsessionType() {
 */
 bool Session::validateAccountHolder() {
   string line;
+  string getaccnumber;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
+    getaccnumber = "";
     string word[4];
     int counter = 0;
-    for(int i = 0; i < line.length(); i++){
-      if(line[i] == '_'){
-        counter++;
-      }else if(line[i] == ' '){
-
-      }
-      else{
-        word[counter] += line[i];
-      }
+    for(int i = 6; i < 25; i++){
+    //  if(line[i] == '_'){
+    //    counter++;
+    //  }else if(line[i] == ' '){
+    //    counter++;
+    //  }
+    //  else{
+    //    word[counter] += line[i];
+    //  }
+    if(line[i] != ' '){
+      getaccnumber += line[i];
     }
-    if(word[1] == accountHolderName){
+    }
+    //getaccnumber += line[i];
+    if(getaccnumber == accountHolderName){
       reader.close();
       return true;
     }
