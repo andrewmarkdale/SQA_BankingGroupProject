@@ -3,8 +3,8 @@ enter session type:
 login accepted
 enter transaction type:
 enter account holder name:
-enter the account number
-enter the payee:
-invalid input
+enter account number:
+enter deposit amount:
+deposit successful
 enter transaction type:
 session terminated
