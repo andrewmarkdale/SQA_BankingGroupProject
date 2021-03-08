@@ -245,6 +245,30 @@ bool Transaction::validateAccountNumber(){
   return false;
 }
 
+bool Transaction::validateAccountStatus(){
+  string line;
+  ifstream reader(currentBankAccountFile);
+  while (getline (reader, line)) {
+    string word[4];
+    int counter = 0;
+    for(int i = 0; i < line.length(); i++){
+      if(line[i] == '_'){
+        counter++;
+      }else if(line[i] == ' '){
+
+      }
+      else{
+        word[counter] += line[i];
+      }
+    }
+    if(word[2] == "D"){
+      return true;
+    }
+  }
+
+  reader.close();
+  return false;
+}
 
 /*
   startCurrentTansaction will initiate the users currentTransaction
@@ -698,7 +722,7 @@ bool Transaction::disable(){
     return false;
   }
 
-  cout << "enter account holder name:\n";
+  cout << "enter account name:\n";
   cin >> accountHolderName;
   if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
@@ -707,7 +731,7 @@ bool Transaction::disable(){
   }
 
   string d;
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
@@ -843,7 +867,8 @@ bool Transaction::Delete(){
     return false;
   }
 
-  cout << "enter account holder name:\n";
+
+  cout << "enter account name:\n";
   cin >> accountHolderName;
   if(cancelCheck(accountHolderName)){return false;};
   if(validateAccountHolder() == false){
@@ -851,9 +876,11 @@ bool Transaction::Delete(){
     return false;
   }
 
-  cout << "enter account number\n";
+  cout << "enter account number:\n";
   cin >> accountNumber;
+
   if(cancelCheck(accountNumber)){return false;};
+
   if(validateAccountNumber()){
 
     string tempname = accountHolderName;

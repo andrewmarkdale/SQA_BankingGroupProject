@@ -92,5 +92,6 @@ class Transaction {
   void startCurrentTransaction();
   bool cancelCheck(string &input);
   bool checkAccountNumber(string temp_num);
+  bool validateAccountStatus();
 };
 #endif
