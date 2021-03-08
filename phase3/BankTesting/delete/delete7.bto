@@ -2,8 +2,8 @@ welcome to the banking system
 enter session type:
 login accepted
 enter transaction type:
-input account name:
-input account number:
-unable to delete non-zero account balance
+enter account name:
+enter account number:
+delete successful
 enter transaction type:
 session terminated

@@ -14,7 +14,7 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 declare -i termpass=0
 declare -i termc=0
-declare -a transactions=("create")
+declare -a transactions=("delete")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do

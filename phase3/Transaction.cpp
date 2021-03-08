@@ -838,6 +838,8 @@ bool Transaction::create(){
   for(int i = temp_name.length(); i < 20; i++){
     temp_name += ' ';
   }
+  
+  cout << "create successful\n";
 
   appendTosessionTransactionFile += string("07 ")+string(temp_name)+" "+string(accountNumber)+string(" ")+string(balance)+" "+string("\n");
 
@@ -887,7 +889,9 @@ bool Transaction::Delete(){
     for(int i = accountHolderName.length(); i < 20; i++){
       tempname += ' ';
     }
-    appendTosessionTransactionFile += "06 "+tempname+" "+accountNumber+" "+string("00000000\n");
+    cout << "delete successful\n";
+    
+    appendTosessionTransactionFile += "06 "+tempname+" "+accountNumber+" "+string("00000000")+string(" \n");
 
     accountHolderName = "";
     return true;
