@@ -14,7 +14,7 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 declare -i termpass=0
 declare -i termc=0
-declare -a transactions=("login" "logout" "withdrawal" "transfer")
+declare -a transactions=("create")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
@@ -40,7 +40,7 @@ for i in "${transactions[@]}"
             echo "";
             termc+=1
         done
-        
+
         #Compare expected transaction file with actual transaction file
         for FILE in *.etf; do echo "Comparing $FILE with ${FILE%.*}.atf";
             # Check to see if the files are identical
@@ -61,7 +61,7 @@ for i in "${transactions[@]}"
 done
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 if([ $termpass -eq $termc ])
-then 
+then
   echo "$current_time Success: $termpass of $termc passed"
 else
   echo "$current_time: Failed: $termpass of $termc passed"

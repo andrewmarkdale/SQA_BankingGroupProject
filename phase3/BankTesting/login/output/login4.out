@@ -1,23 +1,21 @@
 welcome to the banking system
 invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-invalid input
-welcome to the banking system
-enter session type:
 login accepted
+enter transaction type:
+enter account number(from):
+account number not found
+enter transaction type:
+enter account number:
+account number not found
+enter transaction type:
+enter account name:
+account not found
+enter transaction type:
+enter account holder name:
+account not found
+enter transaction type:
+invalid input
+enter transaction type:
+invalid input
 enter transaction type:
 session terminated

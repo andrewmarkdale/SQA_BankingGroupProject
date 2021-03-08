@@ -93,7 +93,7 @@ bool Transaction::validatePlan(){
     }
   }
   cout << "invalid input\n";
-  
+
   return false;
 };
 /*
@@ -205,7 +205,7 @@ bool Transaction::validateAccountNumber(){
   string accountNumberRead;
   string accountName;
   string balance;
-  string status; 
+  string status;
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     accountNumberRead = "";
@@ -213,9 +213,9 @@ bool Transaction::validateAccountNumber(){
     balance = "";
     status ="";
     for(int i = 0; i < 5; i++){
-      
+
       accountNumberRead += line[i];
-      
+
     }
     for(int i = 6; i < 25; i++){
       if(line[i] != ' '){
@@ -383,7 +383,7 @@ bool Transaction::transfer(){
       if(stoi(transferamount) > stoi(accountHolderBalance)){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
       if(stoi(transferamount) + stoi(accountHolderBalanceTo) > 9999999){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
       if(stoi(transferamount) > 100000 && sessiontype == "standard"){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
-      
+
       transferStandardSessionLimit += stoi(transferamount);
       if(transferStandardSessionLimit > 100000 && sessiontype == "standard") {
         cout << "invalid input\n";
@@ -745,7 +745,7 @@ bool Transaction::disable(){
         for(int i = accountHolderName.length(); i < 20; i++){
           tempname += ' ';
         }
-        appendTosessionTransactionFile += string("05_")+tempname+"_"+string(accountNumber)+"_"+string("00000.00_")+string("_")+string("D\n");
+        appendTosessionTransactionFile += string("05 ")+tempname+" "+string(accountNumber)+" "+string("00000000")+string(" ");
 
         accountHolderName = "";
         return true;
@@ -839,7 +839,7 @@ bool Transaction::create(){
     temp_name += ' ';
   }
 
-  appendTosessionTransactionFile += string("07_")+string(temp_name)+"_"+string(accountNumber)+string("_")+string(balance)+"_"+string("\n");
+  appendTosessionTransactionFile += string("07 ")+string(temp_name)+" "+string(accountNumber)+string(" ")+string(balance)+" "+string("\n");
 
   return true;
 }
@@ -887,7 +887,7 @@ bool Transaction::Delete(){
     for(int i = accountHolderName.length(); i < 20; i++){
       tempname += ' ';
     }
-    appendTosessionTransactionFile += "06_"+tempname+"_"+accountNumber+"_"+string("00000.00_\n");
+    appendTosessionTransactionFile += "06 "+tempname+" "+accountNumber+" "+string("00000000\n");
 
     accountHolderName = "";
     return true;

@@ -2,9 +2,10 @@ welcome to the banking system
 enter session type:
 login accepted
 enter transaction type:
-Input account name:
+enter account name:
 enter account number:
-set account status (A/D):
-account was already disabled
+account disabled
+enter transaction type:
+invalid input
 enter transaction type:
 session terminated
