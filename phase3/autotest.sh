@@ -14,7 +14,7 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 declare -i termpass=0
 declare -i termc=0
-declare -a transactions=("changeplan" "deposit" "paybill")
+declare -a transactions=("login" "logout" "withdrawal" "transfer")
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
@@ -66,5 +66,3 @@ then
 else
   echo "$current_time: Failed: $termpass of $termc passed"
 fi
-
-

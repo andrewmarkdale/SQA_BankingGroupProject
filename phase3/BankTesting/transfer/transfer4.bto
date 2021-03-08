@@ -1,14 +1,14 @@
 welcome to the banking system
 enter session type:
 enter account holder name:
-account holder name not found
+account not found
 welcome to the banking system
 enter session type:
 enter account holder name:
 login accepted
 enter transaction type:
 enter account number(from):
-bank account number(from) invalid
+account number not found
 enter transaction type:
 enter account number(from):
 enter account number(to):

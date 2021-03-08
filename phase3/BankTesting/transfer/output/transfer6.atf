@@ -1,1 +1,3 @@
-00_transfertest        _00000_00000.00_
+02 transfertest         00009 00100000   
+02 transfertest2        00010 00100000   
+00 transfertest         00000 00000000   

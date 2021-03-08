@@ -3,8 +3,9 @@ enter session type:
 enter account holder name:
 login accepted
 enter transaction type:
-enter account number
-enter withdrawal amount
+enter account number:
+A
+enter withdrawal amount:
 withdrawal successful
 enter transaction type:
 session terminated

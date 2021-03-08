@@ -2,10 +2,11 @@ welcome to the banking system
 enter session type:
 login accepted
 enter transaction type:
-enter account holder name:
+enter account holder name(from):
 enter account number(from):
-enter account number (to):
-enter transfer amount:
+A
+enter account number(to):
+enter total transfer amount:
 transfer successful
 enter transaction type:
 session terminated

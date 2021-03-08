@@ -1,5 +1,5 @@
 #include "Transaction.h"
-#include<iostream>
+#include <iostream>
 #include <string>
 #include <stdlib.h>
 #include <fstream>
@@ -11,8 +11,9 @@ is_number checks if input string is in fact a number -- if not
 it returns false.
 */
 bool is_number(const string& s){
-    return !s.empty() && std::find_if(s.begin(),
-        s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+     return !s.empty() && std::find_if(s.begin(),
+         s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+    return true;
 }
 /*
   getTransaction will read in the transaction type as std input and
@@ -35,6 +36,7 @@ bool Transaction::cancelCheck(string &input){
     cout << "transaction cancelled\n";
     return true;
   }
+  return false;
 }
 
 /*
@@ -203,22 +205,14 @@ bool Transaction::validateAccountNumber(){
   string accountNumberRead;
   string accountName;
   string balance;
+  string status; 
   ifstream reader(currentBankAccountFile);
   while (getline (reader, line)) {
     accountNumberRead = "";
     accountName = "";
     balance = "";
-    string word[4];
-    int counter = 0;
+    status ="";
     for(int i = 0; i < 5; i++){
-      //if(line[i] == '_'){
-      //  counter++;
-      //}else if(line[i] == ' '){
-
-      //}
-      //else{
-      //  word[counter] += line[i];
-      //}
       
       accountNumberRead += line[i];
       
@@ -231,12 +225,16 @@ bool Transaction::validateAccountNumber(){
     for(int i = 29; i<37;i++){
       balance += line[i];
     }
-    if(currentTransaction == "transfer" && accountNumberTo == word[0]){
-      accountHolderNameTo = word[1];
+    status = line[27];
+    if(currentTransaction == "transfer" && accountNumberTo == accountNumberRead){
+      accountHolderNameTo = accountName;
+      accountHolderBalanceTo = balance;
+      if(status == "D"){cout << "account disabled\n"; return false;}
       return true;
     }
     if(accountName == accountHolderName && accountNumberRead == accountNumber && accountNumberTo ==""){
       accountHolderBalance = balance;
+      if(status == "D"){cout << "account disabled\n"; return false;}
       return true;
     }
   }
@@ -335,9 +333,10 @@ closes transaction file
 returns true
 ****************************************************************************************************/
 bool Transaction::transfer(){
+  string transferamount;
 
   if(sessiontype == "admin"){
-    cout << "enter account holder name:\n";
+    cout << "enter account holder name(from):\n";
     cin >> accountHolderName;
     if(cancelCheck(accountHolderName)){return false;};
     if(validateAccountHolder() == false){
@@ -345,35 +344,40 @@ bool Transaction::transfer(){
       return false;
     }
   }
-  string transferamount;
   cout << "enter account number(from):\n";
   cin >> accountNumber;
   if(cancelCheck(accountNumber)){return false;};
   if(validateAccountNumber()){
-    cout <<"enter account number (to):\n";
+    cout <<"enter account number(to):\n";
     cin >> accountNumberTo;
-    if(cancelCheck(accountNumberTo)){return false;};
+    if(cancelCheck(accountNumberTo)){accountNumberTo ="";accountHolderNameTo =""; return false;};
     if(validateAccountNumber()){
-      cout <<"enter transfer amount:\n";
+      cout <<"enter total transfer amount:\n";
       cin >> transferamount;
-      if(cancelCheck(transferamount)){return false;};
-      if(::atof(transferamount.c_str()) > 1000 && sessiontype == "standard"){
-        cout << "limit for standard transfer is 1000\n";
-        accountNumberTo ="";
-        accountHolderNameTo ="";
+      if(cancelCheck(transferamount)){accountNumberTo =""; accountHolderNameTo ="";return false;};
+      if(!is_number(transferamount)){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
+      if(stoi(transferamount) > stoi(accountHolderBalance)){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
+      if(stoi(transferamount) + stoi(accountHolderBalanceTo) > 9999999){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
+      if(stoi(transferamount) > 100000 && sessiontype == "standard"){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
+      
+      transferStandardSessionLimit += stoi(transferamount);
+      if(transferStandardSessionLimit > 100000 && sessiontype == "standard") {
+        cout << "invalid input\n";
+        transferStandardSessionLimit -= stoi(transferamount);
+        accountNumberTo =""; accountHolderNameTo ="";
         return false;
       }
       cout <<"transfer successful\n";
 
-        string tempname = accountHolderName;
+      string tempname = accountHolderName;
       for(int i = accountHolderName.length(); i<20; i++){
         tempname += ' ';
       }
       for(int i = accountHolderNameTo.length(); i<20; i++){
         accountHolderNameTo += ' ';
       }
-      appendTosessionTransactionFile += "02_"+tempname+"_"+accountNumber+"_"+transferamount+"_\n";
-      appendTosessionTransactionFile += "02_"+accountHolderNameTo+"_"+accountNumberTo+"_"+transferamount+"_\n";
+      appendTosessionTransactionFile += "02 "+tempname+" "+accountNumber+" "+transferamount+"   \n";
+      appendTosessionTransactionFile += "02 "+accountHolderNameTo+" "+accountNumberTo+" "+transferamount+"   \n";
       accountNumberTo ="";
       accountHolderNameTo ="";
       if(sessiontype == "admin"){accountHolderName = "";}
@@ -616,14 +620,18 @@ bool Transaction::withdrawal(){
     cout << "enter withdrawal amount:\n";
     cin >> withdrawalamount;
     if(cancelCheck(withdrawalamount)){return false;};
+    if(!is_number(withdrawalamount)){cout << "invalid input\n";return false;}
+    if(stoi(withdrawalamount) > 50000 && sessiontype == "standard"){cout << "invalid input\n"; return false;}
     if(stoi(withdrawalamount) > stoi(accountHolderBalance)){cout << "invalid input\n";return false;}
+    withdrawalStandardSessionLimit += stoi(withdrawalamount);
+    if( withdrawalStandardSessionLimit > 50000 && sessiontype == "standard") {cout << "invalid input\n";  withdrawalStandardSessionLimit -= stoi(withdrawalamount); return false;}
     cout << "withdrawal successful\n";
 
     string tempname = accountHolderName;
     for(int i = accountHolderName.length(); i < 20; i++){
       tempname += ' ';
     }
-    appendTosessionTransactionFile += "01_"+tempname+"_"+accountNumber+"_"+withdrawalamount+"_\n";
+    appendTosessionTransactionFile += "01 "+tempname+" "+accountNumber+" "+withdrawalamount+"   \n";
     if(sessiontype == "admin"){accountHolderName = "";}
     return true;
   }

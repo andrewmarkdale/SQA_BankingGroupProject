@@ -4,8 +4,9 @@ enter account holder name:
 login accepted
 enter transaction type:
 enter account number(from):
-enter account number (to):
-enter transfer amount:
-limit for standard transfer is 1000
+A
+enter account number(to):
+enter total transfer amount:
+transfer successful
 enter transaction type:
 session terminated

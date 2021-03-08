@@ -1,12 +1,13 @@
 welcome to the banking system
 enter session type:
-enter account holder name:
 login accepted
 enter transaction type:
+enter account holder name:
 enter account number:
 enter withdrawal amount:
-insufficient funds for withdrawal
+invalid input
 enter transaction type:
+enter account holder name:
 enter account number:
 enter withdrawal amount:
 withdrawal successful
