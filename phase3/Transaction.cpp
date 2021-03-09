@@ -116,7 +116,7 @@ return false
 */
 
 bool Transaction::validatePayee(){
-  cout << "enter the payee:\n";
+  cout << "enter the payee (EC, CQ or FI):\n";
   cin >> currentPayee;
   if(cancelCheck(currentPayee)){return false;};
   for(int i = 0; i < 3; i++){

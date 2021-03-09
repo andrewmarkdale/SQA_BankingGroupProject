@@ -12,12 +12,13 @@ declare -a transactions=("login" "logout" "paybill" "transfer"
 red=`tput setab 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
+> ../testresults.txt
 declare -i termpass=0
 declare -i termc=0
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
-    #echo "Testing $i transactions:";
+    echo "Testing $i transactions:";
     cd $i
         #Running test file to generate actual session transaction file and actual terminal output
         for FILE in *.inp; do echo "Running test $FILE";
@@ -30,11 +31,13 @@ for i in "${transactions[@]}"
             # Check to see if the files are identical
             if diff -q $FILE output/${FILE%.*}.out >/dev/null
             then
-                #echo "  ${green}Test Passed${reset}";
+                echo "  ${green}Test Passed${reset}";
                 termpass+=1
             else
                 echo "  ${red}Test Failed${reset}";
-                diff $FILE output/${FILE%.*}.out
+                echo "Test Failed $FILE diff ${FILE%.*}.out" >> ../../testresults.txt
+                diff $FILE output/${FILE%.*}.atf >> ../../testresults.txt
+                echo "" >> ../../testresults.txt
             fi
             echo "";
             termc+=1
@@ -45,11 +48,13 @@ for i in "${transactions[@]}"
             # Check to see if the files are identical
             if diff -q $FILE output/${FILE%.*}.atf >/dev/null
             then
-                #echo "  ${green}Test Passed${reset}";
+                echo "  ${green}Test Passed${reset}";
                 termpass+=1
             else
-                echo "  ${red}Test Failed${reset}";
-                diff $FILE output/${FILE%.*}.atf
+                echo "  ${red}Test Failed${reset}"
+                echo "Test Failed $FILE diff ${FILE%.*}.atf" >> ../../testresults.txt
+                diff $FILE output/${FILE%.*}.atf >> ../../testresults.txt
+                echo "" >> ../../testresults.txt
             fi
             echo "";
             termc+=1
@@ -62,6 +67,8 @@ current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 if([ $termpass -eq $termc ])
 then
   echo "$current_time Success: $termpass of $termc passed"
+  echo "$current_time Success: $termpass of $termc passed" >> ../testlog.txt
 else
   echo "$current_time: Failed: $termpass of $termc passed"
+  echo "$current_time  Failed: $termpass of $termc passed" >> ../testlog.txt
 fi
