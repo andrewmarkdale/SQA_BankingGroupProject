@@ -8,3 +8,6 @@ Simple banking terminal
    4) ./autotest.sh 
    Note: The tests will print out in the terminal and will be saved to 2 files testlog.txt and testfailures.txt. All tests working on an Ubuntu linux machine. 
    
+   Recommend using the pdf version of the failuretable as it maintains the
+   formatting better. 
+   
