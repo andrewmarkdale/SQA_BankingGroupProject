@@ -17,7 +17,7 @@ declare -i termc=0
 # Loop throught each transaction test directory
 for i in "${transactions[@]}"
     do
-    echo "Testing $i transactions:";
+    #echo "Testing $i transactions:";
     cd $i
         #Running test file to generate actual session transaction file and actual terminal output
         for FILE in *.inp; do echo "Running test $FILE";
@@ -30,7 +30,7 @@ for i in "${transactions[@]}"
             # Check to see if the files are identical
             if diff -q $FILE output/${FILE%.*}.out >/dev/null
             then
-                echo "  ${green}Test Passed${reset}";
+                #echo "  ${green}Test Passed${reset}";
                 termpass+=1
             else
                 echo "  ${red}Test Failed${reset}";
@@ -45,7 +45,7 @@ for i in "${transactions[@]}"
             # Check to see if the files are identical
             if diff -q $FILE output/${FILE%.*}.atf >/dev/null
             then
-                echo "  ${green}Test Passed${reset}";
+                #echo "  ${green}Test Passed${reset}";
                 termpass+=1
             else
                 echo "  ${red}Test Failed${reset}";

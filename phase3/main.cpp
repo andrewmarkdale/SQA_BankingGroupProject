@@ -26,7 +26,7 @@ int main(int argc, char** argv)
       cout << "welcome to the banking system\n";
       Session newSession(argv[1], argv[2]);
       newSession.login();
-      if(newSession.accountHolderExist || newSession.sessionType == "admin"){
+      if(newSession.accountHolderExist || newSession.sessionType == "admin" ){
         cout << "login accepted\n";
         Transaction newTransaction(newSession);
         newTransaction.getTransaction();

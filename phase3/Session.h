@@ -27,6 +27,7 @@ class Session {
     Session(string CBAF, string STF){
       currentBankAccountFile = CBAF;
       sessionTransactionFile = STF;
+      accountHolderExist = false;
     };
 
     bool accountHolderExist;

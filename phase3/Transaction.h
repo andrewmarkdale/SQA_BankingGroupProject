@@ -48,8 +48,6 @@ class Transaction {
   string currentBankAccountFile;
   string sessionTransactionFile;
   string appendTosessionTransactionFile;
-  int withdrawalStandardSessionLimit;
-  int transferStandardSessionLimit;
   Transaction(Session currentsession){
     validTransactions[0] = "logout";
     validTransactions[1] = "withdrawal";

@@ -13,7 +13,7 @@ it returns false.
 bool is_number(const string& s){
      return !s.empty() && std::find_if(s.begin(),
          s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
-    return true;
+    //return true;
 }
 /*
   getTransaction will read in the transaction type as std input and
@@ -384,13 +384,7 @@ bool Transaction::transfer(){
       if(stoi(transferamount) + stoi(accountHolderBalanceTo) > 9999999){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
       if(stoi(transferamount) > 100000 && sessiontype == "standard"){cout << "invalid input\n"; accountNumberTo =""; accountHolderNameTo ="";return false;}
 
-      transferStandardSessionLimit += stoi(transferamount);
-      if(transferStandardSessionLimit > 100000 && sessiontype == "standard") {
-        cout << "invalid input\n";
-        transferStandardSessionLimit -= stoi(transferamount);
-        accountNumberTo =""; accountHolderNameTo ="";
-        return false;
-      }
+    
       cout <<"transfer successful\n";
 
       string tempname = accountHolderName;
@@ -647,8 +641,7 @@ bool Transaction::withdrawal(){
     if(!is_number(withdrawalamount)){cout << "invalid input\n";return false;}
     if(stoi(withdrawalamount) > 50000 && sessiontype == "standard"){cout << "invalid input\n"; return false;}
     if(stoi(withdrawalamount) > stoi(accountHolderBalance)){cout << "invalid input\n";return false;}
-    withdrawalStandardSessionLimit += stoi(withdrawalamount);
-    if( withdrawalStandardSessionLimit > 50000 && sessiontype == "standard") {cout << "invalid input\n";  withdrawalStandardSessionLimit -= stoi(withdrawalamount); return false;}
+    
     cout << "withdrawal successful\n";
 
     string tempname = accountHolderName;
