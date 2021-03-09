@@ -738,7 +738,7 @@ bool Transaction::disable(){
         for(int i = accountHolderName.length(); i < 20; i++){
           tempname += ' ';
         }
-        appendTosessionTransactionFile += string("05 ")+tempname+" "+string(accountNumber)+" "+string("00000000")+string(" ");
+        appendTosessionTransactionFile += string("05 ")+tempname+" "+string(accountNumber)+" "+string("00000000")+string("   \n");
 
         accountHolderName = "";
         return true;
@@ -834,7 +834,7 @@ bool Transaction::create(){
   
   cout << "create successful\n";
 
-  appendTosessionTransactionFile += string("07 ")+string(temp_name)+" "+string(accountNumber)+string(" ")+string(balance)+" "+string("\n");
+  appendTosessionTransactionFile += string("07 ")+string(temp_name)+" "+string(accountNumber)+string(" ")+string(balance)+"   "+string("\n");
 
   return true;
 }
@@ -884,7 +884,7 @@ bool Transaction::Delete(){
     }
     cout << "delete successful\n";
     
-    appendTosessionTransactionFile += "06 "+tempname+" "+accountNumber+" "+string("00000000")+string(" \n");
+    appendTosessionTransactionFile += "06 "+tempname+" "+accountNumber+" "+string("00000000")+string("   \n");
 
     accountHolderName = "";
     return true;
