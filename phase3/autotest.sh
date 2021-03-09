@@ -12,7 +12,7 @@ declare -a transactions=("login" "logout" "paybill" "transfer"
 red=`tput setab 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
-> ../testresults.txt
+> ../testfailures.txt
 declare -i termpass=0
 declare -i termc=0
 # Loop throught each transaction test directory
@@ -35,9 +35,9 @@ for i in "${transactions[@]}"
                 termpass+=1
             else
                 echo "  ${red}Test Failed${reset}";
-                echo "Test Failed $FILE diff ${FILE%.*}.out" >> ../../testresults.txt
-                diff $FILE output/${FILE%.*}.atf >> ../../testresults.txt
-                echo "" >> ../../testresults.txt
+                echo "Test Failed $FILE diff ${FILE%.*}.out" >> ../../testfailures.txt
+                diff $FILE output/${FILE%.*}.atf >> ../../testfailures.txt
+                echo "" >> ../../testfailures.txt
             fi
             echo "";
             termc+=1
@@ -52,9 +52,9 @@ for i in "${transactions[@]}"
                 termpass+=1
             else
                 echo "  ${red}Test Failed${reset}"
-                echo "Test Failed $FILE diff ${FILE%.*}.atf" >> ../../testresults.txt
-                diff $FILE output/${FILE%.*}.atf >> ../../testresults.txt
-                echo "" >> ../../testresults.txt
+                echo "Test Failed $FILE diff ${FILE%.*}.atf" >> ../../testfailures.txt
+                diff $FILE output/${FILE%.*}.atf >> ../../testfailures.txt
+                echo "" >> ../../testfailures.txt
             fi
             echo "";
             termc+=1
